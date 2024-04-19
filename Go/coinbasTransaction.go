@@ -80,7 +80,8 @@ func Cointransaction() {
 	// Now you can use the tx variable
 	// fmt.Println(tx)
 
-	serilisedS, _ := SerializeSegwit(&tx)
+	// serilisedS, _ := SerializeSegwit(&tx)
+	serilisedS, _ := serializeTransaction(&tx)
 	SerialisedCBTX = hex.EncodeToString(serilisedS)
 	fmt.Printf("CBTX serialized: %x\n", serilisedS)
 
