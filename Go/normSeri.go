@@ -44,6 +44,6 @@ func ReaderN() {
 
 	SegwitMerkleRoot = generateMerkleRoot(SegTransactionIDs)
 
-	// fmt.Println("Computed Merkle Root Normal:", SegwitMerkleRoot)
+	fmt.Println("Computed Merkle Root Normal:", SegwitMerkleRoot)
 	writeToFile(SegTransactionIDs)
 }
