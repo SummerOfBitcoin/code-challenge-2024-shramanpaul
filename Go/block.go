@@ -42,9 +42,9 @@ func PrintBlockHeader() {
 	// difficultytarget:="0000ffff00000000000000000000000000000000000000000000000000000000"
 	bitsHex := "1f00ffff"
 	//reverse the bits
-	bitsHex = reverseString(bitsHex)
+	//bitsHex = reverseString(bitsHex)
 	bitsBytes, _ := hex.DecodeString(bitsHex)
-	reverseBytes(bitsBytes)
+	//reverseBytes(bitsBytes)
 	bits := binary.BigEndian.Uint32(bitsBytes)
 
 	nonce := rand.Uint32()
