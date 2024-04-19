@@ -20,6 +20,15 @@ type BlockHeader struct {
 var BlockHeaderHash string
 var BlockHeaderHex string
 
+func reverseString(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
+}
+
+
 func PrintBlockHeader() {
 	version := int32(0x20000000) // Static version value
 	var previousBlock [32]byte   // Empty byte array
@@ -32,6 +41,8 @@ func PrintBlockHeader() {
 
 	// difficultytarget:="0000ffff00000000000000000000000000000000000000000000000000000000"
 	bitsHex := "1f00ffff"
+	//reverse the bits
+	bitsHex = reverseString(bitsHex)
 	bitsBytes, _ := hex.DecodeString(bitsHex)
 	reverseBytes(bitsBytes)
 	bits := binary.BigEndian.Uint32(bitsBytes)
