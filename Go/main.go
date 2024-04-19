@@ -43,7 +43,7 @@ func main() {
 	defer file.Close()
 
 	// Write BlockHeaderHash to the file
-	_, err = file.WriteString(BlockHeaderHash + "\n")
+	_, err = file.WriteString(BlockHeaderHex + "\n")
 	if err != nil {
 		log.Fatalf("Failed writing to file: %s", err)
 	}

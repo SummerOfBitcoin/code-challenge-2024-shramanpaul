@@ -18,6 +18,7 @@ type BlockHeader struct {
 }
 
 var BlockHeaderHash string
+var BlockHeaderHex string
 
 func PrintBlockHeader() {
 	version := int32(0x20000000) // Static version value
@@ -89,9 +90,10 @@ func PrintBlockHeader() {
 	// Print the valid nonce and the corresponding block header hash
 	// fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
 	// hash = reverseBytes(hash)
-	// blockHeaderHex:=hex.EncodeToString(blockHeaderBytes)
-	// fmt.Println("BlockHeader: ", blockHeaderHex)
+	BlockHeaderHex = hex.EncodeToString(blockHeaderBytes)
+	// fmt.Println("BlockHeader: ", BlockHeaderHex)
 	//reverse the hash
+	// fmt.Println(len(blockHeaderBytes))
 	hash = reverseBytes(hash)
 	BlockHeaderHash = hex.EncodeToString(hash)
 	// fmt.Printf("Corresponding block header hash: %x\n", hash)
