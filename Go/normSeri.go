@@ -13,7 +13,7 @@ var SegTransactionIDs []string
 var SegwitMerkleRoot string
 
 func ReaderN() {
-	SegTransactionIDs = append(SegTransactionIDs, SegwitMerkleRootCoinbase) //done
+	// SegTransactionIDs = append(SegTransactionIDs, SegwitMerkleRootCoinbase) //done		
 
 	files, err := ioutil.ReadDir("../mempool")
 	if err != nil {
