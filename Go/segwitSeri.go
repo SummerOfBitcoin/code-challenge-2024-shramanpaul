@@ -12,6 +12,7 @@ import (
 // var SegwitonlyMerkleroot string
 // var SegTransactionIDs []string
 var SegTransactionIDsS []string
+
 // var SegwitMerkleRoot string
 var SegwitMerkleRootS string
 
@@ -68,6 +69,17 @@ func Reader() {
 	}
 	// SegwitMerkleRoot = generateMerkleRoot(SegTransactionIDs)
 	SegwitMerkleRootS = generateMerkleRoot(SegTransactionIDsS)
+	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
+	// Decode the hexadecimal strings to bytes
+	SegwitMerkleRootH, _ := hex.DecodeString(SegwitMerkleRootS)
+	WitnessReserved, _ := hex.DecodeString(WitnessReservedValue)
+
+	// Concatenate and hash the bytes
+	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
+
+	// Encode the hash to a hexadecimal string
+	SegwitMerkleRootS = hex.EncodeToString(hash)
+	fmt.Println("WTXID Commitment:", SegwitMerkleRootS)
 	// SegwitonlyMerkleroot = generateMerkleRoot(SegTransactionIDsonly)
 
 	// fmt.Println("Segwit Merkle Root:", SegwitonlyMerkleroot)

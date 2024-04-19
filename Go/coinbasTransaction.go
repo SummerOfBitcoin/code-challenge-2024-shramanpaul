@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/hex"
+	"fmt"
 	// "strconv"
 )
 
@@ -81,7 +82,7 @@ func Cointransaction() {
 
 	serilisedS, _ := SerializeSegwit(&tx)
 	SerialisedCBTX = hex.EncodeToString(serilisedS)
-	// fmt.Printf("CBTX serialized: %x\n", serilisedS)
+	fmt.Printf("CBTX serialized: %x\n", serilisedS)
 
 	hashS := to_sha(to_sha(serilisedS))
 	SegwitMerkleRootCoinbase = hex.EncodeToString(hashS)

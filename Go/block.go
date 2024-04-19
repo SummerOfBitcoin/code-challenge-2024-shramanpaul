@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/binary"
 	"encoding/hex"
+	"fmt"
 	"math/big"
 	"time"
 )
@@ -109,7 +110,7 @@ func PrintBlockHeader() {
 	// hash = reverseBytes(hash)
 	BlockHeaderHex = hex.EncodeToString(blockHeaderBytes)
 	// fmt.Println("Difficulty target: ", difficultyTargetInt)
-	// fmt.Println("BlockHeader: ", BlockHeaderHex)
+	fmt.Println("BlockHeader: ", BlockHeaderHex)
 	//reverse the hash
 	// fmt.Println(len(blockHeaderBytes))
 	hash = reverseBytes(hash)
