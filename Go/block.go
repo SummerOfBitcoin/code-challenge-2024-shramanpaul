@@ -65,6 +65,8 @@ func PrintBlockHeader() {
 	blockHeaderBytes = append(blockHeaderBytes, nonceBytes...)
 
 	// fmt.Println("BlockHeaderBytes: ",blockHeaderBytes)
+	//convert blockheader to hex
+	// blockHeaderHex := hex.EncodeToString(blockHeaderBytes)
 
 	hash := to_sha(to_sha(blockHeaderBytes))
 	hashInt := new(big.Int).SetBytes(hash)
@@ -80,11 +82,17 @@ func PrintBlockHeader() {
 		nonceBytes := make([]byte, 4)
 		binary.LittleEndian.PutUint32(nonceBytes, blockHeader.Nonce)
 		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) // Update the nonce in the block header bytes
+		// fmt.Println("BlockHeaderBytes: ", blockHeaderBytes)
 		hash = to_sha(to_sha(blockHeaderBytes))
 		hashInt.SetBytes(hash)
 	}
 	// Print the valid nonce and the corresponding block header hash
 	// fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
+	// hash = reverseBytes(hash)
+	// blockHeaderHex:=hex.EncodeToString(blockHeaderBytes)
+	// fmt.Println("BlockHeader: ", blockHeaderHex)
+	//reverse the hash
+	hash = reverseBytes(hash)
 	BlockHeaderHash = hex.EncodeToString(hash)
 	// fmt.Printf("Corresponding block header hash: %x\n", hash)
 	// fmt.Println("BlockHeader: ", BlockHeaderHash)

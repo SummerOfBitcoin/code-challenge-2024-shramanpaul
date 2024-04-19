@@ -32,8 +32,8 @@ func main() {
 	Reader()
 	Cointransaction()
 	// Amount()
-	Block()
 	ReaderN()
+	Block()
 
 	// Open the file in append mode, or create it if it doesn't exist
 	file, err := os.OpenFile("../output.txt", os.O_CREATE|os.O_WRONLY, 0644)
