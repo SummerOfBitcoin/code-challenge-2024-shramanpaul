@@ -68,18 +68,21 @@ func Reader() {
 		// }
 	}
 	// SegwitMerkleRoot = generateMerkleRoot(SegTransactionIDs)
+	commitmentHeader := "6a24aa21a9ed"
 	SegwitMerkleRootS = generateMerkleRoot(SegTransactionIDsS)
 	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
 	// Decode the hexadecimal strings to bytes
+	commitmentHeaderH,_:= hex.DecodeString(commitmentHeader)
 	SegwitMerkleRootH, _ := hex.DecodeString(SegwitMerkleRootS)
 	WitnessReserved, _ := hex.DecodeString(WitnessReservedValue)
 
 	// Concatenate and hash the bytes
 	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
+	hash=append(commitmentHeaderH,hash...)
 
 	// Encode the hash to a hexadecimal string
 	SegwitMerkleRootS = hex.EncodeToString(hash)
-	fmt.Println("WTXID Commitment:", SegwitMerkleRootS)
+	fmt.Println("ScriptPubkey of CBTX:", SegwitMerkleRootS)
 	// SegwitonlyMerkleroot = generateMerkleRoot(SegTransactionIDsonly)
 
 	// fmt.Println("Segwit Merkle Root:", SegwitonlyMerkleroot)
