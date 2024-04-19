@@ -28,7 +28,6 @@ func reverseString(s string) string {
 	return string(runes)
 }
 
-
 func PrintBlockHeader() {
 	version := int32(0x20000000) // Static version value
 	var previousBlock [32]byte   // Empty byte array
@@ -44,7 +43,7 @@ func PrintBlockHeader() {
 	//reverse the bits
 	//bitsHex = reverseString(bitsHex)
 	bitsBytes, _ := hex.DecodeString(bitsHex)
-	//reverseBytes(bitsBytes)
+	reverseBytes(bitsBytes)
 	bits := binary.BigEndian.Uint32(bitsBytes)
 
 	nonce := rand.Uint32()
@@ -88,20 +87,28 @@ func PrintBlockHeader() {
 	difficultyTargetBytes, _ := hex.DecodeString(difficultyTarget)
 	difficultyTargetInt := new(big.Int).SetBytes(difficultyTargetBytes)
 
-	for hashInt.Cmp(difficultyTargetInt) > 0 {
-		// The block header hash is greater than the difficulty target, so generate a new nonce and try again
-		blockHeader.Nonce = rand.Uint32()
+	blockHeader.Nonce = 0 // Start from 0
+	for {
 		nonceBytes := make([]byte, 4)
 		binary.LittleEndian.PutUint32(nonceBytes, blockHeader.Nonce)
 		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) // Update the nonce in the block header bytes
-		// fmt.Println("BlockHeaderBytes: ", blockHeaderBytes)
+
 		hash = to_sha(to_sha(blockHeaderBytes))
 		hashInt.SetBytes(hash)
+
+		if hashInt.Cmp(difficultyTargetInt) <= 0 {
+			// The block header hash is less than or equal to the difficulty target, so the nonce is valid
+			break
+		}
+
+		// The block header hash is greater than the difficulty target, so increment the nonce and try again
+		blockHeader.Nonce++
 	}
 	// Print the valid nonce and the corresponding block header hash
 	// fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
 	// hash = reverseBytes(hash)
 	BlockHeaderHex = hex.EncodeToString(blockHeaderBytes)
+	// fmt.Println("Difficulty target: ", difficultyTargetInt)
 	// fmt.Println("BlockHeader: ", BlockHeaderHex)
 	//reverse the hash
 	// fmt.Println(len(blockHeaderBytes))
