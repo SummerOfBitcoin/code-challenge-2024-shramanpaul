@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"math/big"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -83,9 +84,22 @@ func PrintBlockHeader() {
 	hashInt := new(big.Int).SetBytes(hash)
 
 	// Check the block header hash against the difficulty target
-	difficultyTarget := "0000ffff00000000000000000000000000000000000000000000000000000000"
-	difficultyTargetBytes, _ := hex.DecodeString(difficultyTarget)
-	difficultyTargetInt := new(big.Int).SetBytes(difficultyTargetBytes)
+	// difficultyTarget := "0000ffff00000000000000000000000000000000000000000000000000000000"
+	difficultyTargetCompact := "1f00ffff"
+
+	exponentHex := difficultyTargetCompact[:2]
+	mantissaHex := difficultyTargetCompact[2:]
+
+	exponentInt, _ := strconv.ParseInt(exponentHex, 16, 32)
+	mantissaInt, _ := strconv.ParseInt(mantissaHex, 16, 32)
+
+	if mantissaInt > 0x7fffff {
+		mantissaInt |= -0x800000
+	}
+
+	fullTarget := new(big.Int).Lsh(big.NewInt(mantissaInt), uint(8*(exponentInt-3)))
+
+	difficultyTargetInt := new(big.Int).Set(fullTarget)
 
 	blockHeader.Nonce = 0 // Start from 0
 	for {
@@ -100,7 +114,7 @@ func PrintBlockHeader() {
 			// The block header hash is less than or equal to the difficulty target, so the nonce is valid
 			break
 		}
-
+		// fmt.Println("Nonce: ", blockHeader.Nonce)
 		// The block header hash is greater than the difficulty target, so increment the nonce and try again
 		blockHeader.Nonce++
 	}
