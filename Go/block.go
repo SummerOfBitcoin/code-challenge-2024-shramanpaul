@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/binary"
 	"encoding/hex"
-	"fmt"
 	"math/big"
 	"time"
 )
@@ -94,23 +93,23 @@ func PrintBlockHeader() {
 		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) // Update the nonce in the block header bytes
 
 		hash = to_sha(to_sha(blockHeaderBytes))
-		hash=reverseBytes(hash)
+		hash = reverseBytes(hash)
 		hashInt.SetBytes((hash))
 
 		if hashInt.Cmp(difficultyTargetInt) <= 0 {
 			// The block header hash is less than or equal to the difficulty target, so the nonce is valid
 			break
 		}
-		fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
+		// fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
 		// The block header hash is greater than the difficulty target, so increment the nonce and try again
 		blockHeader.Nonce++
 	}
 	// Print the valid nonce and the corresponding block header hash
-	fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
+	// fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
 	// hash = reverseBytes(hash)
 	BlockHeaderHex = hex.EncodeToString(blockHeaderBytes)
 	// fmt.Println("Difficulty target: ", difficultyTargetInt)
-	fmt.Println("BlockHeader: ", BlockHeaderHex)
+	// fmt.Println("BlockHeader: ", BlockHeaderHex)
 	//reverse the hash
 	// fmt.Println(len(blockHeaderBytes))
 	hash = reverseBytes(hash)
