@@ -1,0 +1,40 @@
+package main
+
+import (
+	"crypto/sha256"
+	"fmt"
+
+	"github.com/mr-tron/base58"
+)
+
+func to_sha(data []byte) []byte {
+	hash := sha256.Sum256(data)
+	return hash[:]
+}
+func to_byte(data string) []byte {
+	return []byte(data)
+}
+func Base58Encode(input []byte) []byte {
+	var data string = base58.Encode(input)
+	return []byte(data)
+}
+func Handle(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+
+func main() {
+	p2kh_address := p2kh()
+	fmt.Printf("Address of p2pkh: %s\n", p2kh_address)
+	p2sh_address := p2sh()
+	fmt.Printf("Address of p2sh: %s\n", p2sh_address)
+	p2wkh_address := v0_p2wpkh()
+	fmt.Printf("Address of p2wkh: %s\n", p2wkh_address)
+	p2wsh_address := v0_p2wsh()
+	fmt.Printf("Address of p2wkh: %s\n", p2wsh_address)
+
+	filename := to_sha(to_sha(to_byte("3b7dc918e5671037effad7848727da3d3bf302b05f5ded9bec89449460473bbb")))
+	fmt.Printf("Filename: %x\n", filename)
+}
