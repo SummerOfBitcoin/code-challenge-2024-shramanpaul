@@ -3,9 +3,8 @@ package main
 import (
 	"encoding/binary"
 	"encoding/hex"
+	"fmt"
 	"math/big"
-	"math/rand"
-	"strconv"
 	"time"
 )
 
@@ -47,7 +46,7 @@ func PrintBlockHeader() {
 	reverseBytes(bitsBytes)
 	bits := binary.BigEndian.Uint32(bitsBytes)
 
-	nonce := rand.Uint32()
+	nonce := uint32(0)
 
 	blockHeader := &BlockHeader{
 		Version:       version,
@@ -84,22 +83,9 @@ func PrintBlockHeader() {
 	hashInt := new(big.Int).SetBytes(hash)
 
 	// Check the block header hash against the difficulty target
-	// difficultyTarget := "0000ffff00000000000000000000000000000000000000000000000000000000"
-	difficultyTargetCompact := "1f00ffff"
-
-	exponentHex := difficultyTargetCompact[:2]
-	mantissaHex := difficultyTargetCompact[2:]
-
-	exponentInt, _ := strconv.ParseInt(exponentHex, 16, 32)
-	mantissaInt, _ := strconv.ParseInt(mantissaHex, 16, 32)
-
-	if mantissaInt > 0x7fffff {
-		mantissaInt |= -0x800000
-	}
-
-	fullTarget := new(big.Int).Lsh(big.NewInt(mantissaInt), uint(8*(exponentInt-3)))
-
-	difficultyTargetInt := new(big.Int).Set(fullTarget)
+	difficultyTarget := "0000ffff00000000000000000000000000000000000000000000000000000000"
+	difficultyTargetBytes, _ := hex.DecodeString(difficultyTarget)
+	difficultyTargetInt := new(big.Int).SetBytes((difficultyTargetBytes))
 
 	blockHeader.Nonce = 0 // Start from 0
 	for {
@@ -108,22 +94,23 @@ func PrintBlockHeader() {
 		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) // Update the nonce in the block header bytes
 
 		hash = to_sha(to_sha(blockHeaderBytes))
-		hashInt.SetBytes(hash)
+		hash=reverseBytes(hash)
+		hashInt.SetBytes((hash))
 
 		if hashInt.Cmp(difficultyTargetInt) <= 0 {
 			// The block header hash is less than or equal to the difficulty target, so the nonce is valid
 			break
 		}
-		// fmt.Println("Nonce: ", blockHeader.Nonce)
+		fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
 		// The block header hash is greater than the difficulty target, so increment the nonce and try again
 		blockHeader.Nonce++
 	}
 	// Print the valid nonce and the corresponding block header hash
-	// fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
+	fmt.Printf("Found a valid nonce: %d\n", blockHeader.Nonce)
 	// hash = reverseBytes(hash)
 	BlockHeaderHex = hex.EncodeToString(blockHeaderBytes)
 	// fmt.Println("Difficulty target: ", difficultyTargetInt)
-	// fmt.Println("BlockHeader: ", BlockHeaderHex)
+	fmt.Println("BlockHeader: ", BlockHeaderHex)
 	//reverse the hash
 	// fmt.Println(len(blockHeaderBytes))
 	hash = reverseBytes(hash)
