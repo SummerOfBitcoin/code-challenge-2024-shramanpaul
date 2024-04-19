@@ -32,10 +32,10 @@ func PrintBlockHeader() {
 	version := int32(0x20000000) // Static version value
 	var previousBlock [32]byte   // Empty byte array
 	var merkleRoot [32]byte
-	merkleRootHex := to_sha([]byte(SegwitMerkleRoot))
-	fmt.Println("SedwitMerkleRoot: ",(merkleRootHex))
-	merkleRootBytes, _ := hex.DecodeString(string(merkleRootHex))
-	copy(merkleRoot[:], reverseBytes(merkleRootBytes))
+	merkleRootHex := SegwitMerkleRoot
+	fmt.Println("SedwitMerkleRoot: ",SegwitMerkleRoot)
+	merkleRootBytes, _ := hex.DecodeString(merkleRootHex)
+	copy(merkleRoot[:], (merkleRootBytes))
 
 	timestamp := uint32(time.Now().Unix()) //timestamp
 
