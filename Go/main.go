@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"log"
 	"os"
 	"strings"
@@ -55,7 +56,14 @@ func main() {
 	}
 
 	// Write TXID to the file
-	_, err = file.WriteString(strings.Join(TxIDs, "\n") + "\n")
+	// Reverse each TXID as bytes before writing it to the file
+	reversedTxIDs := make([]string, len(TxIDs))
+	for i, txid := range TxIDs {
+		txidBytes, _ := hex.DecodeString(txid)
+		reversedBytes := reverseBytes(txidBytes)
+		reversedTxIDs[i] = hex.EncodeToString(reversedBytes)
+	}
+	_, err = file.WriteString(strings.Join(reversedTxIDs, "\n") + "\n")
 	if err != nil {
 		log.Fatalf("Failed writing to file: %s", err)
 	}

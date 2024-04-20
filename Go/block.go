@@ -28,7 +28,7 @@ func PrintBlockHeader() {
 	merkleRootHex := NormalMerkleRoot
 	fmt.Println("Normal MerkleRoot: ", NormalMerkleRoot)
 	merkleRootBytes, _ := hex.DecodeString(merkleRootHex)
-	copy(merkleRoot[:], (reverseBytes(merkleRootBytes)))
+	copy(merkleRoot[:], ((merkleRootBytes)))
 
 	timestamp := uint32(time.Now().Unix()) //timestamp
 
