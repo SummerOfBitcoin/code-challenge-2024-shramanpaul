@@ -4,18 +4,17 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 )
 
-var SegTransactionIDs []string
-var SegwitMerkleRoot string
+var TxIDs []string
+var NormalMerkleRoot string
 
 func ReaderN() {
-	SegTransactionIDs = append(SegTransactionIDs, SegwitMerkleRootCoinbase) //done		
+	// TxIDs = append(TxIDs, NormalSerialiseCBTX) //done
 
-	files, err := ioutil.ReadDir("../mempool")
+	files, err := os.ReadDir("../mempool")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,11 +38,11 @@ func ReaderN() {
 		hash := to_sha(to_sha(serilised))
 		hash = reverseBytes(hash)
 
-		SegTransactionIDs = append(SegTransactionIDs, hex.EncodeToString(hash))
+		TxIDs = append(TxIDs, hex.EncodeToString(hash))
 	}
-
-	SegwitMerkleRoot = generateMerkleRoot(SegTransactionIDs)
-
-	fmt.Println("Computed Merkle Root Normal:", SegwitMerkleRoot)
-	writeToFile(SegTransactionIDs)
+	TxIDs = append([]string{NormalSerialiseCBTX}, TxIDs...)
+	NormalMerkleRoot = generateMerkleRoot(TxIDs)
+	fmt.Println("OK: ", len(TxIDs))
+	fmt.Println("Computed Merkle Root Normal:", NormalMerkleRoot)
+	writeToFile(TxIDs)
 }

@@ -10,8 +10,8 @@ import (
 )
 
 // var SegwitonlyMerkleroot string
-// var SegTransactionIDs []string
-var SegTransactionIDsS []string
+// var TxIDs []string
+var WtxIDs []string
 
 // var SegwitMerkleRoot string
 var SegwitMerkleRootS string
@@ -20,8 +20,8 @@ func Reader() {
 	// count := 0
 
 	// var SegTransactionIDsonly []string
-	// SegTransactionIDs = append(SegTransactionIDs, SegwitMerkleRootCoinbase)//done
-	SegTransactionIDsS = append(SegTransactionIDsS, "0000000000000000000000000000000000000000000000000000000000000000")
+	// TxIDs = append(TxIDs, NormalSerialiseCBTX)//done
+	WtxIDs = append(WtxIDs, "0000000000000000000000000000000000000000000000000000000000000000")
 	// SegTransactionIDsonly = append(SegTransactionIDsonly, "0000000000000000000000000000000000000000000000000000000000000000")
 
 	files, err := ioutil.ReadDir("../mempool")
@@ -43,14 +43,14 @@ func Reader() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		//appending the coinbase transaction to the SegTransactionIDs
+		//appending the coinbase transaction to the TxIDs
 		// if IsSegWit(tx) == 1 {
 		serilisedS, _ := SerializeSegwit(&tx)
 		// 	// fmt.Printf("Segwitserilisation: %x\n", serilised)
 		hashS := to_sha(to_sha(serilisedS))
 		// 	// hash = reverseBytes(hash)
 
-		SegTransactionIDsS = append(SegTransactionIDsS, hex.EncodeToString(hashS))
+		WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
 		// 	SegTransactionIDsonly = append(SegTransactionIDsonly, hex.EncodeToString(hash))
 		// fmt.Printf("Transaction ID: %x\n", hashS)
 		// count++
@@ -60,25 +60,25 @@ func Reader() {
 		// hash := to_sha(to_sha(serilised))
 		// hash = reverseBytes(hash)
 
-		// SegTransactionIDs = append(SegTransactionIDs, hex.EncodeToString(hash))
+		// TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		// fmt.Printf("Transaction ID: %x\n", hash)
 		// 	count++
 		// fmt.Println("Count: ", count)
 
 		// }
 	}
-	// SegwitMerkleRoot = generateMerkleRoot(SegTransactionIDs)
+	// SegwitMerkleRoot = generateMerkleRoot(TxIDs)
 	commitmentHeader := "6a24aa21a9ed"
-	SegwitMerkleRootS = generateMerkleRoot(SegTransactionIDsS)
+	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)
 	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
 	// Decode the hexadecimal strings to bytes
-	commitmentHeaderH,_:= hex.DecodeString(commitmentHeader)
+	commitmentHeaderH, _ := hex.DecodeString(commitmentHeader)
 	SegwitMerkleRootH, _ := hex.DecodeString(SegwitMerkleRootS)
 	WitnessReserved, _ := hex.DecodeString(WitnessReservedValue)
 
 	// Concatenate and hash the bytes
 	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
-	hash=append(commitmentHeaderH,hash...)
+	hash = append(commitmentHeaderH, hash...)
 
 	// Encode the hash to a hexadecimal string
 	SegwitMerkleRootS = hex.EncodeToString(hash)
@@ -92,7 +92,7 @@ func Reader() {
 	// fmt.Println("Computed Merkle RootS:", SegwitMerkleRootS)
 
 	// writeToFile(SegTransactionIDsonly)
-	// writeToFile(SegTransactionIDs)
-	// writeToFile(SegTransactionIDsS)
-	// fmt.Println("Segwit Transaction IDs: ", SegTransactionIDs)
+	// writeToFile(TxIDs)
+	// writeToFile(WtxIDs)
+	// fmt.Println("Segwit Transaction IDs: ", TxIDs)
 }

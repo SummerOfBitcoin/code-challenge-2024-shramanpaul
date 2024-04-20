@@ -55,7 +55,7 @@ func main() {
 	}
 
 	// Write TXID to the file
-	_, err = file.WriteString(strings.Join(SegTransactionIDs, "\n") + "\n")
+	_, err = file.WriteString(strings.Join(TxIDs, "\n") + "\n")
 	if err != nil {
 		log.Fatalf("Failed writing to file: %s", err)
 	}
