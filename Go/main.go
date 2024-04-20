@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"strings"
 
 	"github.com/mr-tron/base58"
 )
@@ -36,7 +35,7 @@ func main() {
 	Block()
 
 	// Open the file in append mode, or create it if it doesn't exist
-	file, err := os.OpenFile("../output.txt", os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.Create("../output.txt")
 	if err != nil {
 		log.Fatalf("Failed opening file: %s", err)
 	}
@@ -56,9 +55,8 @@ func main() {
 
 	// Write TXID to the file
 	// Reverse each TXID as bytes before writing it to the file
-	_, err = file.WriteString(strings.Join(TxIDs, "\n") + "\n")
-	if err != nil {
-		log.Fatalf("Failed writing to file: %s", err)
+	for _, txid := range TxIDs {
+		file.WriteString(txid + "\n")
 	}
 
 }
