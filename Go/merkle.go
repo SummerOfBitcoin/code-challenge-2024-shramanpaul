@@ -4,11 +4,8 @@ import (
 	"bufio"
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
-	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 )
 
 // func reverseString(hash string) string {
@@ -43,97 +40,91 @@ func hash256(data string) string {
 }
 
 func generateMerkleRoot(txids []string) string {
-    if len(txids) == 0 {
-        return ""
-    }
-
-    level := make([]string, len(txids))
-    for i, txid := range txids {
-        txidBytes, _ := hex.DecodeString(txid)
-        reversedBytes1 := reverseBytes(txidBytes)
-        level[i] = hex.EncodeToString(reversedBytes1)
-    }
-
-    for len(level) > 1 {
-        nextLevel := make([]string, 0)
-
-        for i := 0; i < len(level); i += 2 {
-            var pairHash string
-            if i+1 == len(level) {
-                pairHash = hash256(level[i] + level[i])
-            } else {
-                pairHash = hash256(level[i] + level[i+1])
-            }
-            nextLevel = append(nextLevel, pairHash)
-        }
-
-        level = nextLevel
-    }
-
-    return level[0]
-}
-
-func reverseBytes1(data []byte) []byte {
-    for i := 0; i < len(data)/2; i++ {
-        data[i], data[len(data)-1-i] = data[len(data)-1-i], data[i]
-    }
-    return data
-}
-func CreateMerkleTree() {
-
-	var TransactionIDs []string
-
-	files, err := os.ReadDir("../mempool")
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
+	if len(txids) == 0 {
+		return ""
 	}
-	count := 0
-	for _, file := range files {
-		if filepath.Ext(file.Name()) == ".json" {
-			txData, err := jsonData("../mempool/" + file.Name())
-			if err != nil {
-				fmt.Println("Error:", err)
-				continue
+
+	level := make([]string, len(txids))
+	for idx := range txids {
+		hash, _ := hex.DecodeString(txids[idx])
+		hash = reverseBytes(hash)
+		level[idx] = hex.EncodeToString(hash)
+	}
+
+	for len(level) > 1 {
+		nextLevel := make([]string, 0)
+
+		for i := 0; i < len(level); i += 2 {
+			var pairHash string
+			if i+1 == len(level) {
+				pairHash = hash256(level[i] + level[i])
+			} else {
+				pairHash = hash256(level[i] + level[i+1])
 			}
-
-			// Unmarshal the transaction data
-			var tx Transaction
-			err = json.Unmarshal([]byte(txData), &tx)
-			if err != nil {
-				panic(fmt.Sprintf("Error: %v", err))
-				// continue
-			}
-
-			// Serialize the transaction
-			serialized, err := serializeTransaction(&tx)
-			if err != nil {
-				fmt.Println("Error:", err)
-				continue
-			}
-
-			count++
-			fmt.Println("Count: ", count)
-
-			// fmt.Printf("Serialized transaction: %x\n", serialized)
-			hash := to_sha(to_sha(serialized))
-			hash = reverseBytes(hash)
-
-			TransactionIDs = append(TransactionIDs, hex.EncodeToString(hash))
-			fmt.Printf("Transaction ID: %x\n", hash)
-
+			nextLevel = append(nextLevel, pairHash)
 		}
 
+		level = nextLevel
 	}
 
-	// Call generateMerkleRoot function with txids from the file
-	// merkleRoot := generateMerkleRoot(TransactionIDs)
-
-	// // Print the computed Merkle root
-	// fmt.Println("Computed Merkle Root:", merkleRoot)
-	// fmt.Printf("Transaction IDs: %v\n", TransactionIDs)
-	// writeToFile(TransactionIDs)
+	return level[0]
 }
+
+// func CreateMerkleTree() {
+
+// 	var TransactionIDs []string
+
+// 	files, err := os.ReadDir("../mempool")
+// 	if err != nil {
+// 		fmt.Println("Error:", err)
+// 		return
+// 	}
+// 	count := 0
+// 	for _, file := range files {
+// 		if filepath.Ext(file.Name()) == ".json" {
+// 			txData, err := jsonData("../mempool/" + file.Name())
+// 			if err != nil {
+// 				fmt.Println("Error:", err)
+// 				continue
+// 			}
+
+// 			// Unmarshal the transaction data
+// 			var tx Transaction
+// 			err = json.Unmarshal([]byte(txData), &tx)
+// 			if err != nil {
+// 				panic(fmt.Sprintf("Error: %v", err))
+// 				// continue
+// 			}
+
+// 			// Serialize the transaction
+// 			serialized, err := serializeTransaction(&tx)
+// 			if err != nil {
+// 				fmt.Println("Error:", err)
+// 				continue
+// 			}
+
+// 			count++
+// 			fmt.Println("Count: ", count)
+
+// 			// fmt.Printf("Serialized transaction: %x\n", serialized)
+// 			hash := to_sha(to_sha(serialized))
+// 			hash = reverseBytes(hash)
+
+// 			TransactionIDs = append(TransactionIDs, hex.EncodeToString(hash))
+// 			fmt.Printf("Transaction ID: %x\n", hash)
+
+// 		}
+
+// 	}
+
+// Call generateMerkleRoot function with txids from the file
+// merkleRoot := generateMerkleRoot(TransactionIDs)
+
+// // Print the computed Merkle root
+// fmt.Println("Computed Merkle Root:", merkleRoot)
+// fmt.Printf("Transaction IDs: %v\n", TransactionIDs)
+// writeToFile(TransactionIDs)
+// }
 
 // Write the TransactionIDs to a file
 func writeToFile(TransactionIDs []string) {
