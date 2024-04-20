@@ -55,6 +55,11 @@ func main() {
 	}
 
 	// Write TXID to the file
+	//reversebyte SegTransactionIDs
+	for i := 0; i < len(SegTransactionIDs); i++ {
+		SegTransactionIDs[i] = string(reverseBytes([]byte(SegTransactionIDs[i])))
+	}
+
 	_, err = file.WriteString(strings.Join(SegTransactionIDs, "\n") + "\n")
 	if err != nil {
 		log.Fatalf("Failed writing to file: %s", err)

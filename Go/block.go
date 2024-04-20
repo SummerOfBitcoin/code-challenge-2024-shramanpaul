@@ -33,9 +33,9 @@ func PrintBlockHeader() {
 	var previousBlock [32]byte   // Empty byte array
 	var merkleRoot [32]byte
 	merkleRootHex := SegwitMerkleRoot
-	fmt.Println("SedwitMerkleRoot: ", SegwitMerkleRoot)
+	fmt.Println("SedwitMerkleRoot: ",SegwitMerkleRoot)
 	merkleRootBytes, _ := hex.DecodeString(merkleRootHex)
-	copy(merkleRoot[:], to_sha(reverseBytes(merkleRootBytes)))
+	copy(merkleRoot[:], (reverseBytes(merkleRootBytes)))
 
 	timestamp := uint32(time.Now().Unix()) //timestamp
 

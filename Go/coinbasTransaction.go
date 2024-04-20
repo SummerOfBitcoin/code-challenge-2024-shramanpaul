@@ -88,6 +88,6 @@ func Cointransaction() {
 	hashS := to_sha(to_sha(serilisedS))
 	SegwitMerkleRootCoinbase = hex.EncodeToString(hashS)
 
-	// fmt.Println("SegwitMerkleRootCoinbase: ", SegwitMerkleRootCoinbase)
+	fmt.Println("SegwitMerkleRootCoinbase: ", SegwitMerkleRootCoinbase)
 	// fmt.Println("segwitttttt:", SegwitMerkleRootS)
 }
