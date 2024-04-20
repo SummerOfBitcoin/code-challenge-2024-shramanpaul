@@ -48,7 +48,7 @@ func main() {
 	}
 
 	// Write SerialisedCBTX to the file
-	_, err = file.WriteString(SerialisedCBTX + "\n")
+	_, err = file.WriteString(SegwitSerialisedCBTX + "\n")
 	if err != nil {
 		log.Fatalf("Failed writing to file: %s", err)
 	}

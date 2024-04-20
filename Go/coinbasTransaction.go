@@ -44,6 +44,7 @@ type Transaction2 struct {
 
 var NormalSerialiseCBTX string
 var SerialisedCBTX string
+var SegwitSerialisedCBTX string
 
 func Cointransaction() {
 
@@ -84,6 +85,10 @@ func Cointransaction() {
 	serilisedS, _ := serializeTransaction(&tx)
 	SerialisedCBTX = hex.EncodeToString(serilisedS)
 	fmt.Printf("CBTX serialized: %x\n", serilisedS)
+	//segwit serialisation of the coinbase transaction
+	segwitSerialisedS, _ := SerializeSegwit(&tx)
+	SegwitSerialisedCBTX = hex.EncodeToString(segwitSerialisedS)
+	fmt.Println("Segwit CBTX serialized: ", SegwitSerialisedCBTX)
 
 	hashS := reverseBytes(to_sha(to_sha(serilisedS)))
 	NormalSerialiseCBTX = hex.EncodeToString(hashS)
