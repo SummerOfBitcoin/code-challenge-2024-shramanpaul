@@ -86,6 +86,7 @@ func Cointransaction() {
 	fmt.Printf("CBTX serialized: %x\n", serilisedS)
 
 	hashS := to_sha(to_sha(serilisedS))
+	hashS = reverseBytes(hashS)
 	SegwitMerkleRootCoinbase = hex.EncodeToString(hashS)
 
 	fmt.Println("SegwitMerkleRootCoinbase: ", SegwitMerkleRootCoinbase)
