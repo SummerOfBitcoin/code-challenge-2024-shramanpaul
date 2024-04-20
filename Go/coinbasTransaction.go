@@ -86,7 +86,6 @@ func Cointransaction() {
 	fmt.Printf("CBTX serialized: %x\n", serilisedS)
 
 	hashS := to_sha(to_sha(serilisedS))
-	hashS = reverseBytes(hashS)
 	NormalSerialiseCBTX = hex.EncodeToString(hashS)
 
 	fmt.Println("NormalSerialiseCBTX: ", NormalSerialiseCBTX)

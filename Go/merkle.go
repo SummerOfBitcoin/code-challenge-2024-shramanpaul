@@ -48,11 +48,6 @@ func generateMerkleRoot(txids []string) string {
     }
 
     level := make([]string, len(txids))
-    for i, txid := range txids {
-        txidBytes, _ := hex.DecodeString(txid)
-        reversedBytes1 := reverseBytes1(txidBytes)
-        level[i] = hex.EncodeToString(reversedBytes1)
-    }
 
     for len(level) > 1 {
         nextLevel := make([]string, 0)

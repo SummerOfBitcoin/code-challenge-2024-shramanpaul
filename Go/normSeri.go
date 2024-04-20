@@ -36,7 +36,6 @@ func ReaderN() {
 
 		serilised, _ := serializeTransaction(&tx)
 		hash := to_sha(to_sha(serilised))
-		hash = reverseBytes(hash)
 
 		TxIDs = append(TxIDs, hex.EncodeToString(hash))
 	}
