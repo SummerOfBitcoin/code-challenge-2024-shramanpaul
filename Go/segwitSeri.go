@@ -48,7 +48,7 @@ func Reader() {
 		serilisedS, _ := SerializeSegwit(&tx)
 		// 	// fmt.Printf("Segwitserilisation: %x\n", serilised)
 		hashS := to_sha(to_sha(serilisedS))
-		// 	// hash = reverseBytes(hash)
+			hashS = reverseBytes(hashS)
 
 		WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
 		// 	SegTransactionIDsonly = append(SegTransactionIDsonly, hex.EncodeToString(hash))
