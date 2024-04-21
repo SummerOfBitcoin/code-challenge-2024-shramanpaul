@@ -55,9 +55,10 @@ func Reader() {
 	// Concatenate and hash the bytes
 	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
 	hash = append(commitmentHeaderH, hash...)
-	hash=reverseBytes(hash)
+	// hash=reverseBytes(hash)
 	// Encode the hash to a hexadecimal string
 	SegwitMerkleRootS = hex.EncodeToString(hash)
+	SegwitMerkleRootS="0"
 	fmt.Println("Witness Commitment of CBTX:", SegwitMerkleRootS)
 
 }
