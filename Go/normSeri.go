@@ -37,7 +37,7 @@ count:=0
 		if CalculateWeight(tx) <= 1000 {
 count++
 			serilised, _ := serializeTransaction(&tx)
-			hash := (to_sha(to_sha(serilised)))
+			hash := reverseBytes(to_sha(to_sha(serilised)))
 
 			TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		}
