@@ -30,7 +30,7 @@ func Amount() int {
 			continue
 		}
 
-		if CalculateWeight(tx) <= 505 {
+		if CalculateWeight(tx) <= 4000 {
 
 			for _, input := range tx.Vin {
 				totalInput += int(input.Prevout.Value)
