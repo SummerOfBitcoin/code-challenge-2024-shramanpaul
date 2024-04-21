@@ -43,9 +43,9 @@ func Reader() {
 			WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
 		}
 	}
-	// SegwitMerkleRoot = generateMerkleRoot(TxIDs)
-	commitmentHeader := "aa21a9ed"
+	commitmentHeader := "6a24aa21a9ed"
 	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)
+	fmt.Println("SegwitMerkleRoot: ",SegwitMerkleRootS)
 	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
 	// Decode the hexadecimal strings to bytes
 	commitmentHeaderH, _ := hex.DecodeString(commitmentHeader)
@@ -53,7 +53,9 @@ func Reader() {
 	WitnessReserved, _ := hex.DecodeString(WitnessReservedValue)
 
 	// Concatenate and hash the bytes
+	fmt.Println("Witness root hash: ", hex.EncodeToString(SegwitMerkleRootH))
 	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
+	fmt.Println("Hash: ",hex.EncodeToString(hash))
 	// commitmentHeaderH=reverseBytes(commitmentHeaderH)
 	hash = append(commitmentHeaderH, hash...)
 	// hash=reverseBytes(hash)
