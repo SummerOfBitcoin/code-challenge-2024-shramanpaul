@@ -36,13 +36,13 @@ func Reader() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 720 {
+		// if CalculateWeight(tx) <= 720 {
 
 			serilisedS, _ := SerializeSegwit(&tx)
 			hashS := to_sha(to_sha(serilisedS))
 
 			WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
-		}
+		// }
 	}
 	// SegwitMerkleRoot = generateMerkleRoot(TxIDs)
 	commitmentHeader := "6a24aa21a9ed"
