@@ -34,7 +34,7 @@ func ReaderN() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 4000 {
+		if CalculateWeight(tx) <= 620 {
 			count++
 			serilised, _ := serializeTransaction(&tx)
 			hash := reverseBytes(to_sha(to_sha(serilised)))
