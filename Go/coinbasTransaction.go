@@ -75,6 +75,7 @@ func Cointransaction() {
 		{
 			Value:        0000000000000000,
 			Scriptpubkey: SegwitMerkleRootS,
+			ScriptpubkeyType: "op_return",
 		},
 	}
 
