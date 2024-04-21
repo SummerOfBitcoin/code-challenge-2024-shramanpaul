@@ -55,7 +55,7 @@ func main() {
 
 	// Write TXID to the file
 	// Reverse each TXID as bytes before writing it to the file
-	for _, txid := range WtxIDs {
+	for _, txid := range TxIDs {
 		file.WriteString(txid + "\n")
 	}
 	Priority()
