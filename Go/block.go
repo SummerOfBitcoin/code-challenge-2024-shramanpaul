@@ -20,7 +20,6 @@ type BlockHeader struct {
 var BlockHeaderHash string
 var BlockHeaderHex string
 
-
 func PrintBlockHeader() {
 	version := int32(0x20000000) // Static version value
 	var previousBlock [32]byte   // Empty byte array
@@ -28,7 +27,7 @@ func PrintBlockHeader() {
 	merkleRootHex := NormalMerkleRoot
 	fmt.Println("Normal MerkleRoot: ", NormalMerkleRoot)
 	merkleRootBytes, _ := hex.DecodeString(merkleRootHex)
-	copy(merkleRoot[:], ((merkleRootBytes)))
+	copy(merkleRoot[:], (merkleRootBytes))
 
 	timestamp := uint32(time.Now().Unix()) //timestamp
 
@@ -65,7 +64,6 @@ func PrintBlockHeader() {
 	blockHeaderBytes = append(blockHeaderBytes, timestampBytes...)
 	blockHeaderBytes = append(blockHeaderBytes, bitsBytes...)
 	blockHeaderBytes = append(blockHeaderBytes, nonceBytes...)
-
 
 	hash := to_sha(to_sha(blockHeaderBytes))
 	hashInt := new(big.Int).SetBytes(hash)

@@ -58,5 +58,5 @@ func main() {
 	for _, txid := range TxIDs {
 		file.WriteString(txid + "\n")
 	}
-
+	Priority()
 }

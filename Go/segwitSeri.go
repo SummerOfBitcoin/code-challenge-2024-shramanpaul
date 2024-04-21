@@ -44,7 +44,7 @@ func Reader() {
 	// SegwitMerkleRoot = generateMerkleRoot(TxIDs)
 	commitmentHeader := "6a24aa21a9ed"
 	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)
-	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
+	WitnessReservedValue := "00000000000000000000000000000000000000000000000000000000000000"
 	// Decode the hexadecimal strings to bytes
 	commitmentHeaderH, _ := hex.DecodeString(commitmentHeader)
 	SegwitMerkleRootH, _ := hex.DecodeString(SegwitMerkleRootS)
