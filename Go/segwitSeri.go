@@ -15,6 +15,7 @@ var SegwitMerkleRootS string
 
 func Reader() {
 
+	count := 0
 	WtxIDs = append(WtxIDs, "0000000000000000000000000000000000000000000000000000000000000000")
 
 	files, err := ioutil.ReadDir("../mempool")
@@ -36,7 +37,8 @@ func Reader() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 10000 {
+		count++
+		if count <= 1000 {
 
 			serilisedS, _ := SerializeSegwit(&tx)
 			hashS := to_sha(to_sha(serilisedS))
