@@ -95,7 +95,7 @@ func Cointransaction() {
 	NormalSerialiseCBTX = hex.EncodeToString(hashS)
 
 	fmt.Println("NormalSerialiseCBTX: ", NormalSerialiseCBTX)
-	// fmt.Println("segwitttttt:", SegwitMerkleRootS)
+	fmt.Println("segwitttttt:", SegwitMerkleRootS)
 
 	if IsSegWit(&tx)==1{
 		fmt.Println("Transaction is a Segwit Transaction")

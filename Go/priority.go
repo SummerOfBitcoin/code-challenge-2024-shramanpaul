@@ -32,9 +32,15 @@ func CalculateWeight(tx Transaction) int {
 	baseSize := 0
 	totalSize := 0
 
-	// Add size for version, locktime, input count and output count
-	baseSize += 4 + 1 + 1 + 4
-	totalSize += 4 + 1 + 1 + 4
+	// Add size for version and locktime
+	baseSize += 4 + 4
+	totalSize += 4 + 4
+
+	// Add size for input count and output count
+	inputCountSize := len(serialise_pubkey_len(uint64(len(tx.Vin))))
+	outputCountSize := len(serialise_pubkey_len(uint64(len(tx.Vout))))
+	baseSize += inputCountSize + outputCountSize
+	totalSize += inputCountSize + outputCountSize
 
 	// Calculate base size
 	for _, input := range tx.Vin {
@@ -131,7 +137,7 @@ func Priority() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 805 {
+		if CalculateWeight(tx) <= 605 {
 			count++
 
 			weight = append(weight, CalculateWeight(tx))
