@@ -14,7 +14,7 @@ var SegwitMerkleRootS string
 
 func Reader() {
 
-	WtxIDs = append(WtxIDs, "00000000000000000000000000000000000000000000000000000000000000")
+	// WtxIDs = append(WtxIDs, "00000000000000000000000000000000000000000000000000000000000000")
 
 	files, err := os.ReadDir("../mempool")
 	if err != nil {
@@ -44,6 +44,7 @@ func Reader() {
 		}
 	}
 	commitmentHeader := "6a24aa21a9ed"
+WtxIDs=append(WtxIDs,"00000000000000000000000000000000000000000000000000000000000000")
 	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)
 	fmt.Println("SegwitMerkleRoot: ",SegwitMerkleRootS)
 	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
