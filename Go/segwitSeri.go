@@ -15,7 +15,7 @@ var SegwitMerkleRootS string
 
 func Reader() {
 
-	// WtxIDs = append(WtxIDs, "0000000000000000000000000000000000000000000000000000000000000000")
+	WtxIDs = append(WtxIDs, "0000000000000000000000000000000000000000000000000000000000000000")
 
 	files, err := ioutil.ReadDir("../mempool")
 	if err != nil {
