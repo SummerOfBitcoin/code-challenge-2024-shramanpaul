@@ -19,7 +19,7 @@ func Reader() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	count:=0
 	for _, file := range files {
 		filePath := "../mempool/" + file.Name()
 		data, err := os.ReadFile(filePath)
@@ -35,13 +35,14 @@ func Reader() {
 			continue
 		}
 		if CalculateWeight(tx) <= 1000 {
-
+			count++
 			serilisedS, _ := SerializeSegwit(&tx)
 			hashS := reverseBytes(to_sha(to_sha(serilisedS)))
 
 			WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
 		}
 	}
+	fmt.Println("count: ",count)
 	commitmentHeader := "6a24aa21a9ed"
 	WtxIDs = append([]string{"00000000000000000000000000000000000000000000000000000000000000"}, WtxIDs...)
 	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)

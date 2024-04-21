@@ -35,7 +35,7 @@ count:=0
 			continue
 		}
 		if CalculateWeight(tx) <= 1000 {
-count++
+			count++
 			serilised, _ := serializeTransaction(&tx)
 			hash := reverseBytes(to_sha(to_sha(serilised)))
 
