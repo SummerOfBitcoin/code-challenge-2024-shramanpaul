@@ -36,7 +36,7 @@ func Reader() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 720 {
+		if CalculateWeight(tx) <= 600 {
 
 			serilisedS, _ := SerializeSegwit(&tx)
 			hashS := to_sha(to_sha(serilisedS))
