@@ -47,5 +47,5 @@ func ReaderN() {
 	NormalMerkleRoot = generateMerkleRoot(TxIDs)
 	// fmt.Println("OK: ", len(TxIDs))
 	// fmt.Println("Computed Merkle Root Normal:", NormalMerkleRoot)
-	writeToFile(TxIDs)
+	// writeToFile(TxIDs)
 }

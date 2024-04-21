@@ -46,7 +46,7 @@ func Reader() {
 	}
 	// fmt.Println("count: ",count)
 	commitmentHeader := "6a24aa21a9ed"
-	WtxIDs = append([]string{"00000000000000000000000000000000000000000000000000000000000000"}, WtxIDs...)
+	WtxIDs = append([]string{"0000000000000000000000000000000000000000000000000000000000000000"}, WtxIDs...)
 	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)
 	// fmt.Println("OK segwit: ",len(WtxIDs))
 	// fmt.Println("SegwitMerkleRoot: ",SegwitMerkleRootS)
@@ -66,5 +66,7 @@ func Reader() {
 
 	SegwitMerkleRootS = hex.EncodeToString(hash)
 	fmt.Println("Computed Merkle Root Segwit: ", SegwitMerkleRootS)
+
+	writeToFile(WtxIDs)
 
 }

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 )
 
 type PriorityTransaction struct {
@@ -76,49 +75,7 @@ var weight []int
 var count int
 
 func Priority() {
-	// files, err := os.ReadDir("../mempool")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
 
-	// priorityTransactions := []PriorityTransaction{}
-
-	// for _, file := range files {
-	// 	filePath := "../mempool/" + file.Name()
-	// 	data, err := os.ReadFile(filePath)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-
-	// 	var tx Transaction
-
-	// 	err = json.Unmarshal(data, &tx)
-	// 	if err != nil {
-	// 		fmt.Println("Error unmarshalling JSON:", err) // Print any errors
-	// 		continue
-	// 	}
-
-	// 	priorityTx := PriorityTransaction{
-	// 		ID:     tx.ID,
-	// 		Fee:    CalculateFee(tx),
-	// 		Weight: CalculateWeight(tx),
-	// 	}
-	// 	priorityTransactions = append(priorityTransactions, priorityTx)
-	// }
-
-	// // Sort the transactions by fee per weight unit in descending order
-	// sort.Slice(priorityTransactions, func(i, j int) bool {
-	// 	fpwuI := float64(priorityTransactions[i].Fee) / float64(priorityTransactions[i].Weight)
-	// 	fpwuJ := float64(priorityTransactions[j].Fee) / float64(priorityTransactions[j].Weight)
-	// 	return fpwuI > fpwuJ
-	// })
-
-	// // Print the sorted transactions
-	// for _, tx := range priorityTransactions {
-	// 	fmt.Printf("ID: %s, Fee: %d, Weight: %d\n", tx.ID, tx.Fee, tx.Weight)
-	// }
-
-	//read a specific file
 	files, err := os.ReadDir("../mempool")
 	if err != nil {
 		log.Fatal(err)
@@ -141,16 +98,10 @@ func Priority() {
 			count++
 
 			weight = append(weight, CalculateWeight(tx))
+			// fmt.Println("Weight:", (CalculateWeight(tx)))
 		}
 		// fmt.Println("Fee:", CalculateFee(tx))
-		// fmt.Println("Weight:", (CalculateWeight(tx)))
+
 	}
 	fmt.Println("count: ", count)
-	// Convert the weight slice to a slice of strings
-	var weightStrings []string
-	for _, w := range weight {
-		weightStrings = append(weightStrings, strconv.Itoa(w))
-	}
-
-	// writeToFile(weightStrings)
 }
