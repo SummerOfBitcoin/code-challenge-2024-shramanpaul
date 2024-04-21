@@ -37,7 +37,7 @@ func Reader() {
 		if CalculateWeight(tx) <= 1000 {
 
 			serilisedS, _ := SerializeSegwit(&tx)
-			hashS := to_sha(to_sha(serilisedS))
+			hashS := reverseBytes(to_sha(to_sha(serilisedS)))
 
 			WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
 		}
