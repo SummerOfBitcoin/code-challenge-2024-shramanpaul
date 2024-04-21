@@ -105,7 +105,7 @@ func Priority() {
 		// 	fees = append(fees, CalculateFee(tx))
 		// }
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		if feeToWeightRatio <= 1.35 {
+		if feeToWeightRatio >= 3.35 {
 			count++
 			ratio = append(ratio, feeToWeightRatio)
 			// fmt.Println("Ratio: ", feeToWeightRatio)
