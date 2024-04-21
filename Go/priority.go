@@ -94,7 +94,7 @@ func Priority() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 4000 {
+		if CalculateWeight(tx) <= 605 {
 			count++
 
 			weight = append(weight, CalculateWeight(tx))
