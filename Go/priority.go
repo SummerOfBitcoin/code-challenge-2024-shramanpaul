@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 )
 
 func CalculateFee(tx Transaction) int {
@@ -104,19 +105,19 @@ func Priority() {
 		// 	fees = append(fees, CalculateFee(tx))
 		// }
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		if feeToWeightRatio <= 4.35 {
+		if feeToWeightRatio <= 3.35 {
 			count++
 			ratio = append(ratio, feeToWeightRatio)
 			// fmt.Println("Ratio: ", feeToWeightRatio)
 		}
 	}
 	// Convert the weight slice from []int to []string
-	// weightStrings := make([]string, len(ratio))
-	// for i, w := range ratio {
-	// 	weightStrings[i] = strconv.FormatFloat(w, 'f', -1, 64)
-	// }
+	weightStrings := make([]string, len(ratio))
+	for i, w := range ratio {
+		weightStrings[i] = strconv.FormatFloat(w, 'f', -1, 64)
+	}
 
-	// writeToFile(weightStrings)
+	writeToFile(weightStrings)
 	fmt.Println("count: ", count)
 	// fmt.Println("count fees: ", count2)
 }

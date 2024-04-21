@@ -35,7 +35,7 @@ func ReaderN() {
 			continue
 		}
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		if feeToWeightRatio <= 4.35 {
+		if feeToWeightRatio <= 3.35 {
 			count++
 			serilised, _ := serializeTransaction(&tx)
 			hash := reverseBytes(to_sha(to_sha(serilised)))
