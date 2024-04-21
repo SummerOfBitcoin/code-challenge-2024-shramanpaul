@@ -32,33 +32,36 @@ func CalculateWeight(tx Transaction) int {
 	baseSize := 0
 	totalSize := 0
 
+	// Add size for version, locktime, input count and output count
+	baseSize += 4 + 1 + 1 + 4
+	totalSize += 4 + 1 + 1 + 4
+
 	// Calculate base size
 	for _, input := range tx.Vin {
 		baseSize += len(input.TxID)/2 + 34 // TxID size + output size (scriptpubkey + value)
-		baseSize += 4 + 1 + 4              // version + input count + locktime
 	}
 	for _, output := range tx.Vout {
 		baseSize += 8 + 1 + len(output.Scriptpubkey)/2 // value + script length + scriptpubkey
-		baseSize += 1 + 4                              // output count + locktime
 	}
 
 	// Calculate total size
-	totalSize += 2 // marker and flag
-	for _, input := range tx.Vin {
-		totalSize += len(input.TxID)/2 + 34 // TxID size + output size (scriptpubkey + value)
-		totalSize += 4 + 1 + 4              // version + input count + locktime
-		for _, witness := range input.Witness {
-			totalSize += len(witness) / 2 // witness size
+	if IsSegWit(&tx) == 1 {
+		totalSize += 2 // marker and flag
+		for _, input := range tx.Vin {
+			totalSize += len(input.TxID)/2 + 34 // TxID size + output size (scriptpubkey + value)
+			for _, witness := range input.Witness {
+				totalSize += len(witness) / 2 // witness size
+			}
 		}
-	}
-	for _, output := range tx.Vout {
-		totalSize += 8 + 1 + len(output.Scriptpubkey)/2 // value + script length + scriptpubkey
-		totalSize += 1 + 4                              // output count + locktime
+		for _, output := range tx.Vout {
+			totalSize += 8 + 1 + len(output.Scriptpubkey)/2 // value + script length + scriptpubkey
+		}
+	} else {
+		totalSize = baseSize
 	}
 
 	// Calculate weight
 	weight := baseSize*3 + totalSize
-
 	return weight
 }
 
