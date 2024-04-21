@@ -41,7 +41,7 @@ func ReaderN() {
 			TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		}
 	}
-	// TxIDs = append([]string{NormalSerialiseCBTX}, TxIDs...)
+	TxIDs = append([]string{NormalSerialiseCBTX}, TxIDs...)
 	NormalMerkleRoot = generateMerkleRoot(TxIDs)
 	fmt.Println("OK: ", len(TxIDs))
 	fmt.Println("Computed Merkle Root Normal:", NormalMerkleRoot)
