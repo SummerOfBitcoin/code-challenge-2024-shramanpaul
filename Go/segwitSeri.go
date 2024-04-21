@@ -34,7 +34,8 @@ func Reader() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 605 {
+		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
+		if feeToWeightRatio <= 4.35 {
 			count++
 			serilisedS, _ := SerializeSegwit(&tx)
 			// fmt.Println("Segwit serilisedS: ",hex.EncodeToString(serilisedS))
@@ -67,6 +68,6 @@ func Reader() {
 	SegwitMerkleRootS = hex.EncodeToString(hash)
 	fmt.Println("Computed Merkle Root Segwit: ", SegwitMerkleRootS)
 
-	writeToFile(WtxIDs)
+	// writeToFile(WtxIDs)
 
 }

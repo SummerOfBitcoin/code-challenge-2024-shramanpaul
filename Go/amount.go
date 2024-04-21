@@ -30,7 +30,8 @@ func Amount() int {
 			continue
 		}
 
-		if CalculateWeight(tx) <= 605 {
+		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
+		if feeToWeightRatio <= 4.35 {
 
 			for _, input := range tx.Vin {
 				totalInput += int(input.Prevout.Value)

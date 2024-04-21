@@ -7,12 +7,6 @@ import (
 	"os"
 )
 
-type PriorityTransaction struct {
-	ID     string
-	Fee    int
-	Weight int
-}
-
 func CalculateFee(tx Transaction) int {
 	totalInput := 0
 	totalOutput := 0
@@ -72,7 +66,9 @@ func CalculateWeight(tx Transaction) int {
 
 // create an array of int for stroing the weight
 var weight []int
-var count int
+var fees []int
+var ratio []float64
+var count, count2 int
 
 func Priority() {
 
@@ -94,14 +90,33 @@ func Priority() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 605 {
+		// //calculate weight of each transaction
+		// if CalculateWeight(tx) <= 40000000 {
+		// 	count++
+
+		// 	weight = append(weight, CalculateWeight(tx))
+		// 	// fmt.Println("Weight:", (CalculateWeight(tx)))
+		// }
+		// //calculate fee of each transaction
+		// if CalculateFee(tx) <= 20616923 {
+		// 	count2++
+
+		// 	fees = append(fees, CalculateFee(tx))
+		// }
+		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
+		if feeToWeightRatio <= 4.35 {
 			count++
-
-			weight = append(weight, CalculateWeight(tx))
-			// fmt.Println("Weight:", (CalculateWeight(tx)))
+			ratio = append(ratio, feeToWeightRatio)
+			// fmt.Println("Ratio: ", feeToWeightRatio)
 		}
-		// fmt.Println("Fee:", CalculateFee(tx))
-
 	}
+	// Convert the weight slice from []int to []string
+	// weightStrings := make([]string, len(ratio))
+	// for i, w := range ratio {
+	// 	weightStrings[i] = strconv.FormatFloat(w, 'f', -1, 64)
+	// }
+
+	// writeToFile(weightStrings)
 	fmt.Println("count: ", count)
+	// fmt.Println("count fees: ", count2)
 }
