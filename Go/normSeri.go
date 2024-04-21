@@ -42,10 +42,10 @@ count:=0
 			TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		}
 	}
-	fmt.Println("count: ",count)
+	// fmt.Println("count: ",count)
 	TxIDs = append([]string{NormalSerialiseCBTX}, TxIDs...)
 	NormalMerkleRoot = generateMerkleRoot(TxIDs)
-	fmt.Println("OK: ", len(TxIDs))
-	fmt.Println("Computed Merkle Root Normal:", NormalMerkleRoot)
+	// fmt.Println("OK: ", len(TxIDs))
+	// fmt.Println("Computed Merkle Root Normal:", NormalMerkleRoot)
 	writeToFile(TxIDs)
 }

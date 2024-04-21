@@ -50,7 +50,7 @@ func Cointransaction() {
 
 	var tx Transaction
 
-	// amount := Amount()
+	amount := Amount()
 	// amountStr := strconv.Itoa(amount)
 
 	// Set the fields manually
@@ -69,7 +69,7 @@ func Cointransaction() {
 	}
 	tx.Vout = []Prevout{
 		{
-			Value:        uint64(0),
+			Value:        uint64(amount),
 			Scriptpubkey: "76a914edf10a7fac6b32e24daa5305c723f3de58db1bc888ac",
 		},
 		{
@@ -96,4 +96,8 @@ func Cointransaction() {
 
 	fmt.Println("NormalSerialiseCBTX: ", NormalSerialiseCBTX)
 	// fmt.Println("segwitttttt:", SegwitMerkleRootS)
+
+	if IsSegWit(&tx)==1{
+		fmt.Println("Transaction is a Segwit Transaction")
+	}
 }

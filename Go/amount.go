@@ -69,8 +69,8 @@ func Amount() int {
 	// log.Println("Total input:", totalInput)
 	// log.Println("Total output:", totalOutput)
 	transactionfees := totalInput - totalOutput
-
-	// log.Println("Total tranasction fees: ", transactionfees)
+// 
+	log.Println("Total tranasction fees: ", transactionfees)
 
 	return transactionfees
 }
