@@ -43,7 +43,8 @@ func to_sha(data []byte) []byte {
 	hash := sha256.Sum256(data)
 	return hash[:]
 }
-//thia function will be used to derive the txids of ALL the transactions you are INCLUDING in the BLOCK --> include all these derived txids in the merkle root 
+
+// thia function will be used to derive the txids of ALL the transactions you are INCLUDING in the BLOCK --> include all these derived txids in the merkle root
 func serializeTransaction(tx *Transaction) ([]byte, error) {
 	var serialized []byte
 
@@ -109,93 +110,101 @@ func serializeTransaction(tx *Transaction) ([]byte, error) {
 	serialized = append(serialized, locktimeBytes...)
 	return serialized, nil
 }
+
 //thia function will be used to derive the wtxids of ALL the transactions you are INCLUDING in the BLOCK --> wtxids of legacy == txids of legacy --> include all these wtxids in the witness merkle.
 
 func SerializeSegwit(tx *Transaction) ([]byte, error) {
-	var serialized []byte
+	if IsSegWit(tx) == 1 {
+		var serialized []byte
 
-	// Serialize version
-	versionBytes := make([]byte, 4)
-	binary.LittleEndian.PutUint32(versionBytes, tx.Version)
-	serialized = append(serialized, versionBytes...)
+		// Serialize version
+		versionBytes := make([]byte, 4)
+		binary.LittleEndian.PutUint32(versionBytes, tx.Version)
+		serialized = append(serialized, versionBytes...)
 
-	// Serialize marker
-	serialized = append(serialized, 0x00)
+		// Serialize marker
+		serialized = append(serialized, 0x00)
 
-	// Serialize flag
-	serialized = append(serialized, 0x01)
+		// Serialize flag
+		serialized = append(serialized, 0x01)
 
-	// Serialize vin count
-	vinCount := uint64(len(tx.Vin))
-	serialized = append(serialized, serialise_pubkey_len(vinCount)...)
+		// Serialize vin count
+		vinCount := uint64(len(tx.Vin))
+		serialized = append(serialized, serialise_pubkey_len(vinCount)...)
 
-	// Serialize vin
-	for _, vin := range tx.Vin {
-		txidBytes, err := hex.DecodeString(vin.TxID)
-		if err != nil {
-			return nil, err
-		}
-		serialized = append(serialized, reverseBytes(txidBytes)...)
-
-		voutBytes := make([]byte, 4)
-		binary.LittleEndian.PutUint32(voutBytes, vin.Vout)
-		serialized = append(serialized, voutBytes...)
-
-		// Serialize scriptSig length (empty for now)
-		serialized_byte, err := hex.DecodeString(vin.Scriptsig)
-		if err != nil {
-			return nil, err
-		}
-		serialized = append(serialized, serialise_pubkey_len(uint64(len(serialized_byte)))...)
-
-		serialized = append(serialized, serialized_byte...)
-		// Serialize sequence
-		sequenceBytes := make([]byte, 4)
-		binary.LittleEndian.PutUint32(sequenceBytes, vin.Sequence)
-		serialized = append(serialized, sequenceBytes...)
-	}
-
-	// Serialize vout count
-	voutCount := uint64(len(tx.Vout))
-	serialized = append(serialized, serialise_pubkey_len(voutCount)...)
-
-	// Serialize vout
-	for _, vout := range tx.Vout {
-		valueBytes := make([]byte, 8)
-		binary.LittleEndian.PutUint64(valueBytes, vout.Value)
-		serialized = append(serialized, valueBytes...)
-
-		// Serialize scriptPubKey length
-		scriptPubKeyLen := uint64(len(vout.Scriptpubkey) / 2) // Divide by 2 to get byte length
-		serialized = append(serialized, serialise_pubkey_len(scriptPubKeyLen)...)
-
-		// Serialize scriptPubKey
-		scriptPubKeyBytes, err := hex.DecodeString(vout.Scriptpubkey)
-		if err != nil {
-			return nil, err
-		}
-		serialized = append(serialized, scriptPubKeyBytes...)
-	}
-
-	//witness
-	for _, vin := range tx.Vin {
-		witnessCount := uint64(len(vin.Witness))
-		serialized = append(serialized, serialise_pubkey_len(witnessCount)...)
-		for _, witness := range vin.Witness {
-			witnessBytes, err := hex.DecodeString(witness)
+		// Serialize vin
+		for _, vin := range tx.Vin {
+			txidBytes, err := hex.DecodeString(vin.TxID)
 			if err != nil {
 				return nil, err
 			}
-			serialized = append(serialized, serialise_pubkey_len(uint64(len(witnessBytes)))...)
-			serialized = append(serialized, witnessBytes...)
+			serialized = append(serialized, reverseBytes(txidBytes)...)
+
+			voutBytes := make([]byte, 4)
+			binary.LittleEndian.PutUint32(voutBytes, vin.Vout)
+			serialized = append(serialized, voutBytes...)
+
+			// Serialize scriptSig length (empty for now)
+			serialized_byte, err := hex.DecodeString(vin.Scriptsig)
+			if err != nil {
+				return nil, err
+			}
+			serialized = append(serialized, serialise_pubkey_len(uint64(len(serialized_byte)))...)
+
+			serialized = append(serialized, serialized_byte...)
+			// Serialize sequence
+			sequenceBytes := make([]byte, 4)
+			binary.LittleEndian.PutUint32(sequenceBytes, vin.Sequence)
+			serialized = append(serialized, sequenceBytes...)
 		}
 
-	}
+		// Serialize vout count
+		voutCount := uint64(len(tx.Vout))
+		serialized = append(serialized, serialise_pubkey_len(voutCount)...)
 
-	locktimeBytes := make([]byte, 4)
-	binary.LittleEndian.PutUint32(locktimeBytes, tx.Locktime)
-	serialized = append(serialized, locktimeBytes...)
-	return serialized, nil
+		// Serialize vout
+		for _, vout := range tx.Vout {
+			valueBytes := make([]byte, 8)
+			binary.LittleEndian.PutUint64(valueBytes, vout.Value)
+			serialized = append(serialized, valueBytes...)
+
+			// Serialize scriptPubKey length
+			scriptPubKeyLen := uint64(len(vout.Scriptpubkey) / 2) // Divide by 2 to get byte length
+			serialized = append(serialized, serialise_pubkey_len(scriptPubKeyLen)...)
+
+			// Serialize scriptPubKey
+			scriptPubKeyBytes, err := hex.DecodeString(vout.Scriptpubkey)
+			if err != nil {
+				return nil, err
+			}
+			serialized = append(serialized, scriptPubKeyBytes...)
+		}
+
+		//witness
+		for _, vin := range tx.Vin {
+			witnessCount := uint64(len(vin.Witness))
+			serialized = append(serialized, serialise_pubkey_len(witnessCount)...)
+			for _, witness := range vin.Witness {
+				witnessBytes, err := hex.DecodeString(witness)
+				if err != nil {
+					return nil, err
+				}
+				serialized = append(serialized, serialise_pubkey_len(uint64(len(witnessBytes)))...)
+				serialized = append(serialized, witnessBytes...)
+			}
+
+		}
+
+		locktimeBytes := make([]byte, 4)
+		binary.LittleEndian.PutUint32(locktimeBytes, tx.Locktime)
+		serialized = append(serialized, locktimeBytes...)
+		return serialized, nil
+	}else{
+		byte,err:=serializeTransaction(tx)
+		// fmt.Println("Transaction is not a Segwit Transaction")
+		return byte,err
+	}
+	// return nil, nil
 }
 
 func reverseBytes(data []byte) []byte {
