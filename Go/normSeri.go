@@ -19,6 +19,7 @@ func ReaderN() {
 		log.Fatal(err)
 	}
 count:=0
+
 	for _, file := range files {
 		filePath := "../mempool/" + file.Name()
 		data, err := os.ReadFile(filePath)
@@ -36,7 +37,7 @@ count:=0
 		if CalculateWeight(tx) <= 1000 {
 count++
 			serilised, _ := serializeTransaction(&tx)
-			hash := reverseBytes(to_sha(to_sha(serilised)))
+			hash := (to_sha(to_sha(serilised)))
 
 			TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		}
