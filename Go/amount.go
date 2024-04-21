@@ -54,7 +54,7 @@ func Amount() int {
 			continue
 		}
 
-		if CalculateWeight(tx1) <= 600 {
+		// if CalculateWeight(tx1) <= 600 {
 
 			for _, input := range tx.Inputs {
 				totalInput += input.Prevout.Value
@@ -63,7 +63,7 @@ func Amount() int {
 			for _, output := range tx.Outputs {
 				totalOutput += output.Value
 			}
-		}
+		// }
 	}
 
 	// log.Println("Total input:", totalInput)
