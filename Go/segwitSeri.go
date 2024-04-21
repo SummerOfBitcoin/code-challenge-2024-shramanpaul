@@ -13,13 +13,13 @@ var WtxIDs []string
 var SegwitMerkleRootS string
 
 func Reader() {
-	WtxIDs=nil
+	WtxIDs = nil
 	// WtxIDs = append(WtxIDs, "00000000000000000000000000000000000000000000000000000000000000")
 	files, err := os.ReadDir("../mempool")
 	if err != nil {
 		log.Fatal(err)
 	}
-	count:=0
+	count := 0
 	for _, file := range files {
 		filePath := "../mempool/" + file.Name()
 		data, err := os.ReadFile(filePath)
@@ -34,7 +34,7 @@ func Reader() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 1000 {
+		if CalculateWeight(tx) <= 805 {
 			count++
 			serilisedS, _ := SerializeSegwit(&tx)
 			// fmt.Println("Segwit serilisedS: ",hex.EncodeToString(serilisedS))
@@ -63,7 +63,7 @@ func Reader() {
 	// fmt.Println("Segwit root: ", hex.EncodeToString(append(SegwitMerkleRootH, WitnessReserved...)))
 	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
 	hash = append(commitmentHeaderH, hash...)
-	
+
 	SegwitMerkleRootS = hex.EncodeToString(hash)
 	fmt.Println("Computed Merkle Root Segwit: ", SegwitMerkleRootS)
 

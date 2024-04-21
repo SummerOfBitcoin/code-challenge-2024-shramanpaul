@@ -2,30 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 )
 
-type Prevout3 struct {
-	Value int `json:"value"`
-}
-
-type Input3 struct {
-	Prevout Prevout3 `json:"prevout"`
-}
-
-type Output3 struct {
-	Value int `json:"value"`
-}
-
-type Transaction3 struct {
-	Inputs  []Input3  `json:"vin"`
-	Outputs []Output3 `json:"vout"`
-}
-
 func Amount() int {
-	files, err := ioutil.ReadDir("../mempool")
+	files, err := os.ReadDir("../mempool")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,36 +22,28 @@ func Amount() int {
 			log.Fatal(err)
 		}
 
-		var tx Transaction3
-		var tx1 Transaction
+		var tx Transaction
 
 		err = json.Unmarshal(data, &tx)
 		if err != nil {
 			log.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		err = json.Unmarshal(data, &tx1)
-		if err != nil {
-			log.Println("Error unmarshalling JSON:", err) // Print any errors
-			continue
-		}
 
-		if CalculateWeight(tx1) <= 1000 {
+		if CalculateWeight(tx) <= 805 {
 
-			for _, input := range tx.Inputs {
-				totalInput += input.Prevout.Value
+			for _, input := range tx.Vin {
+				totalInput += int(input.Prevout.Value)
 			}
 
-			for _, output := range tx.Outputs {
-				totalOutput += output.Value
+			for _, output := range tx.Vout {
+				totalOutput += int(output.Value)
 			}
 		}
 	}
 
-	// log.Println("Total input:", totalInput)
-	// log.Println("Total output:", totalOutput)
 	transactionfees := totalInput - totalOutput
-// 
+
 	log.Println("Total tranasction fees: ", transactionfees)
 
 	return transactionfees

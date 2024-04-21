@@ -13,12 +13,12 @@ var NormalMerkleRoot string
 
 func ReaderN() {
 	// TxIDs = append(TxIDs, NormalSerialiseCBTX) //done
-	TxIDs=nil
+	TxIDs = nil
 	files, err := os.ReadDir("../mempool")
 	if err != nil {
 		log.Fatal(err)
 	}
-count:=0
+	count := 0
 
 	for _, file := range files {
 		filePath := "../mempool/" + file.Name()
@@ -34,7 +34,7 @@ count:=0
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		if CalculateWeight(tx) <= 1000 {
+		if CalculateWeight(tx) <= 805 {
 			count++
 			serilised, _ := serializeTransaction(&tx)
 			hash := reverseBytes(to_sha(to_sha(serilised)))
