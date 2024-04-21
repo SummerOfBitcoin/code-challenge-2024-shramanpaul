@@ -33,11 +33,13 @@ func ReaderN() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
+		if CalculateWeight(tx) <= 720 {
 
-		serilised, _ := serializeTransaction(&tx)
-		hash := reverseBytes(to_sha(to_sha(serilised)))
+			serilised, _ := serializeTransaction(&tx)
+			hash := reverseBytes(to_sha(to_sha(serilised)))
 
-		TxIDs = append(TxIDs, hex.EncodeToString(hash))
+			TxIDs = append(TxIDs, hex.EncodeToString(hash))
+		}
 	}
 	TxIDs = append([]string{NormalSerialiseCBTX}, TxIDs...)
 	NormalMerkleRoot = generateMerkleRoot(TxIDs)

@@ -64,6 +64,7 @@ func CalculateWeight(tx Transaction) int {
 
 // create an array of int for stroing the weight
 var weight []int
+var count int
 
 func Priority() {
 	// files, err := os.ReadDir("../mempool")
@@ -127,11 +128,15 @@ func Priority() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		weight = append(weight, CalculateWeight(tx))
+		if CalculateWeight(tx) <= 720 {
+			count++
 
+			weight = append(weight, CalculateWeight(tx))
+		}
 		// fmt.Println("Fee:", CalculateFee(tx))
 		// fmt.Println("Weight:", (CalculateWeight(tx)))
 	}
+	fmt.Println("count: ", count)
 	// Convert the weight slice to a slice of strings
 	var weightStrings []string
 	for _, w := range weight {

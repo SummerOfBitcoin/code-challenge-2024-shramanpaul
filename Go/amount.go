@@ -41,18 +41,28 @@ func Amount() int {
 		}
 
 		var tx Transaction3
+		var tx1 Transaction
+
 		err = json.Unmarshal(data, &tx)
 		if err != nil {
 			log.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-
-		for _, input := range tx.Inputs {
-			totalInput += input.Prevout.Value
+		err = json.Unmarshal(data, &tx1)
+		if err != nil {
+			log.Println("Error unmarshalling JSON:", err) // Print any errors
+			continue
 		}
 
-		for _, output := range tx.Outputs {
-			totalOutput += output.Value
+		if CalculateWeight(tx1) <= 720 {
+
+			for _, input := range tx.Inputs {
+				totalInput += input.Prevout.Value
+			}
+
+			for _, output := range tx.Outputs {
+				totalOutput += output.Value
+			}
 		}
 	}
 
