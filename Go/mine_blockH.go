@@ -8,28 +8,29 @@ import (
 	"shramanpaul/structs"
 	"time"
 )
-
+//Block Header and Mining
+//block header is made in this and then mining is also done by incrementing nonce
 
 var BlockHeaderHash string
 var BlockHeaderHex string
 
 func PrintBlockHeader() {
-	version := int32(0x20000000) // Static version value
-	var previousBlock [32]byte   // Empty byte array
-	var merkleRoot [32]byte
+	version := int32(0x20000000) 								//version
+	var previousBlock [32]byte  								//previous block hash 
+	var merkleRoot [32]byte		 								//merkle root
 	merkleRootHex := NormalMerkleRoot
 	fmt.Println("Normal MerkleRoot: ", NormalMerkleRoot)
 	merkleRootBytes, _ := hex.DecodeString(merkleRootHex)
 	copy(merkleRoot[:], (merkleRootBytes))
 
-	timestamp := uint32(time.Now().Unix()) //timestamp
+	timestamp := uint32(time.Now().Unix()) 						//timestamp
 
-	bitsHex := "1f00ffff"
+	bitsHex := "1f00ffff"										//difficulty target in compact form
 	bitsBytes, _ := hex.DecodeString(bitsHex)
 	reverseBytes(bitsBytes)
 	bits := binary.BigEndian.Uint32(bitsBytes)
 
-	nonce := uint32(0)
+	nonce := uint32(0)											//nonce
 
 	blockHeader := &structs.BlockHeader{
 		Version:       version,
@@ -66,7 +67,7 @@ func PrintBlockHeader() {
 	difficultyTargetBytes, _ := hex.DecodeString(difficultyTarget)
 	difficultyTargetInt := new(big.Int).SetBytes((difficultyTargetBytes))
 
-	blockHeader.Nonce = 0 // Start from 0
+	blockHeader.Nonce = 0 
 	for {
 		nonceBytes := make([]byte, 4)
 		binary.LittleEndian.PutUint32(nonceBytes, blockHeader.Nonce)

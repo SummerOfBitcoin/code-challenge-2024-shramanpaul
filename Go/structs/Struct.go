@@ -37,4 +37,6 @@ type Transaction struct {
 	Scriptsig_asm string    `json:"scriptsig_asm";`
 	Witness       []string  `json:"witness";`
 }
+//normalMerkleroot
+
 
