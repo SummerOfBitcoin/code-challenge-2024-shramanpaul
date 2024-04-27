@@ -5,17 +5,18 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
+	structs "shramanpaul/Structs"
 	"time"
 )
 
-type BlockHeader struct {
-	Version       int32
-	PreviousBlock [32]byte
-	MerkleRoot    [32]byte
-	Timestamp     uint32
-	Bits          uint32
-	Nonce         uint32
-}
+// type BlockHeader struct {
+// 	Version       int32
+// 	PreviousBlock [32]byte
+// 	MerkleRoot    [32]byte
+// 	Timestamp     uint32
+// 	Bits          uint32
+// 	Nonce         uint32
+// }
 
 var BlockHeaderHash string
 var BlockHeaderHex string
@@ -38,7 +39,7 @@ func PrintBlockHeader() {
 
 	nonce := uint32(0)
 
-	blockHeader := &BlockHeader{
+	blockHeader := &structs.BlockHeader{
 		Version:       version,
 		PreviousBlock: previousBlock,
 		MerkleRoot:    merkleRoot,

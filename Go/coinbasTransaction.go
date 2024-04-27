@@ -6,41 +6,41 @@ import (
 	// "strconv"
 )
 
-type Input2 struct {
-	Txid          string
-	Vout          string
-	Scriptsigsize string
-	Scriptsig     string
-	Sequence      string
-	Witness       []string
-}
+// type Input2 struct {
+// 	Txid          string
+// 	Vout          string
+// 	Scriptsigsize string
+// 	Scriptsig     string
+// 	Sequence      string
+// 	Witness       []string
+// }
 
-type Output2 struct {
-	Amount           string
-	ScriptPubKeySize string
-	ScriptPubKey     string
-}
-type WitnessItem struct {
-	Size string
-	Item string
-}
+// type Output2 struct {
+// 	Amount           string
+// 	ScriptPubKeySize string
+// 	ScriptPubKey     string
+// }
+// type WitnessItem struct {
+// 	Size string
+// 	Item string
+// }
 
-type Witness struct {
-	StackItems string
-	Items      map[string]WitnessItem
-}
+// type Witness struct {
+// 	StackItems string
+// 	Items      map[string]WitnessItem
+// }
 
-type Transaction2 struct {
-	Version string //
-	// Marker      string
-	// Flag        string
-	Inputcount  string
-	Inputs      []Input2
-	Outputcount string
-	Outputs     []Output2
-	Witness     []Witness
-	Locktime    string //
-}
+// type Transaction2 struct {
+// 	Version string //
+// 	// Marker      string
+// 	// Flag        string
+// 	Inputcount  string
+// 	Inputs      []Input2
+// 	Outputcount string
+// 	Outputs     []Output2
+// 	Witness     []Witness
+// 	Locktime    string //
+// }
 
 var NormalSerialiseCBTX string
 var SerialisedCBTX string
