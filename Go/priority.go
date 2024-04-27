@@ -5,14 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
 	"strconv"
 )
-
-type TxWithRatio struct {
-	Tx    Transaction
-	Ratio float64
-}
 
 func CalculateFee(tx Transaction) int {
 	totalInput := 0
@@ -78,14 +72,11 @@ var ratio []float64
 var count, count2 int
 
 func Priority() {
+
 	files, err := os.ReadDir("../mempool")
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Create a slice of TxWithRatio structs
-	txWithRatios := make([]TxWithRatio, 0)
-
 	for _, file := range files {
 		filePath := "../mempool/" + file.Name()
 		data, err := os.ReadFile(filePath)
@@ -94,34 +85,32 @@ func Priority() {
 		}
 
 		var tx Transaction
+
 		err = json.Unmarshal(data, &tx)
 		if err != nil {
-			fmt.Println("Error unmarshalling JSON:", err)
+			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
+		// //calculate weight of each transaction
+		// if CalculateWeight(tx) <= 40000000 {
+		// 	count++
 
+		// 	weight = append(weight, CalculateWeight(tx))
+		// 	// fmt.Println("Weight:", (CalculateWeight(tx)))
+		// }
+		// //calculate fee of each transaction
+		// if CalculateFee(tx) <= 20616923 {
+		// 	count2++
+
+		// 	fees = append(fees, CalculateFee(tx))
+		// }
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		txWithRatios = append(txWithRatios, TxWithRatio{Tx: tx, Ratio: feeToWeightRatio})
-	}
-
-	// Sort the txWithRatios slice by fee-to-weight ratio in descending order
-	sort.Slice(txWithRatios, func(i, j int) bool {
-		return txWithRatios[i].Ratio > txWithRatios[j].Ratio
-	})
-
-	// Process the transactions in order of fee-to-weight ratio
-	ratio := make([]float64, 0)
-	count := 0
-	totalWeight := 0
-	for _, txWithRatio := range txWithRatios {
-		txWeight := CalculateWeight(txWithRatio.Tx)
-		if totalWeight+txWeight <= 400000 { // Assuming 4000000 is the maximum block weight
-			totalWeight += txWeight
+		if feeToWeightRatio >= 3.35 && CalculateWeight(tx) < 4000 {
 			count++
-			ratio = append(ratio, txWithRatio.Ratio)
+			ratio = append(ratio, feeToWeightRatio)
+			// fmt.Println("Ratio: ", feeToWeightRatio)
 		}
 	}
-
 	// Convert the weight slice from []int to []string
 	weightStrings := make([]string, len(ratio))
 	for i, w := range ratio {
@@ -130,4 +119,5 @@ func Priority() {
 
 	writeToFile(weightStrings)
 	fmt.Println("count: ", count)
+	// fmt.Println("count fees: ", count2)
 }
