@@ -101,9 +101,7 @@ func Priority() {
 		}
 
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		if feeToWeightRatio >= 3.8 && CalculateWeight(tx) < 4000 {
-			txWithRatios = append(txWithRatios, TxWithRatio{Tx: tx, Ratio: feeToWeightRatio})
-		}
+		txWithRatios = append(txWithRatios, TxWithRatio{Tx: tx, Ratio: feeToWeightRatio})
 	}
 
 	// Sort the txWithRatios slice by fee-to-weight ratio in descending order
@@ -114,9 +112,14 @@ func Priority() {
 	// Process the transactions in order of fee-to-weight ratio
 	ratio := make([]float64, 0)
 	count := 0
+	totalWeight := 0
 	for _, txWithRatio := range txWithRatios {
-		count++
-		ratio = append(ratio, txWithRatio.Ratio)
+		txWeight := CalculateWeight(txWithRatio.Tx)
+		if totalWeight+txWeight <= 4000000 { // Assuming 4000000 is the maximum block weight
+			totalWeight += txWeight
+			count++
+			ratio = append(ratio, txWithRatio.Ratio)
+		}
 	}
 
 	// Convert the weight slice from []int to []string
