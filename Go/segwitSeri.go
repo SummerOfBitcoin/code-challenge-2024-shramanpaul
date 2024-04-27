@@ -35,7 +35,7 @@ func Reader() {
 			continue
 		}
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		if feeToWeightRatio >= 3.1 && CalculateWeight(tx) < 8800 {
+		if feeToWeightRatio >= 3.1 && CalculateWeight(tx) < 9200 {
 			count++
 			serilisedS, _ := SerializeSegwit(&tx)
 			// fmt.Println("Segwit serilisedS: ",hex.EncodeToString(serilisedS))
