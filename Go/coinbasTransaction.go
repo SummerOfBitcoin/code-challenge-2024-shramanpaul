@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	structs "shramanpaul/Structs"
+	"shramanpaul/structs"
 )
 
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	structs "shramanpaul/Structs"
+	"shramanpaul/structs"
 )
 
 func Amount() int {

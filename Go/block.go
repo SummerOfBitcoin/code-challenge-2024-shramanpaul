@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
-	structs "shramanpaul/Structs"
+	"shramanpaul/structs"
 	"time"
 )
 

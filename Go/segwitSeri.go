@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	structs "shramanpaul/Structs"
+	"shramanpaul/structs"
 )
 
 var WtxIDs []string

@@ -1,6 +1,6 @@
 package main
 
-import structs "shramanpaul/Structs"
+import "shramanpaul/structs"
 
 func IsSegWit(tx *structs.Transaction) int {
 	for _, vin := range tx.Vin {

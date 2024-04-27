@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	structs "shramanpaul/Structs"
+	"shramanpaul/structs"
 	"strconv"
 )
 
