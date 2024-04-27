@@ -91,21 +91,9 @@ func Priority() {
 			fmt.Println("Error unmarshalling JSON:", err) // Print any errors
 			continue
 		}
-		// //calculate weight of each transaction
-		// if CalculateWeight(tx) <= 40000000 {
-		// 	count++
 
-		// 	weight = append(weight, CalculateWeight(tx))
-		// 	// fmt.Println("Weight:", (CalculateWeight(tx)))
-		// }
-		// //calculate fee of each transaction
-		// if CalculateFee(tx) <= 20616923 {
-		// 	count2++
-
-		// 	fees = append(fees, CalculateFee(tx))
-		// }
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
-		if feeToWeightRatio >= 3.35 && CalculateWeight(tx) < 4000 {
+		if feeToWeightRatio >= 3.8 && CalculateWeight(tx) < 4000 {
 			count++
 			ratio = append(ratio, feeToWeightRatio)
 			// fmt.Println("Ratio: ", feeToWeightRatio)
