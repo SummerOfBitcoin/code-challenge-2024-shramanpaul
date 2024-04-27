@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"shramanpaul/structs"
+	"shramanpaul/utils"
 )
 
 var WtxIDs []string
@@ -38,10 +39,10 @@ func Reader() {
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
 		if feeToWeightRatio >= 3.0 && (CalculateWeight(tx) < 5304 || CalculateWeight(tx) == 12790) {
 			count++
-			serilisedS, _ := SerializeSegwit(&tx)
+			serilisedS, _ := utils.SerializeSegwit(&tx)
 			// fmt.Println("Segwit serilisedS: ",hex.EncodeToString(serilisedS))
 			// fmt.Println("count of tx:",count)
-			hashS := reverseBytes(to_sha(to_sha(serilisedS)))
+			hashS := utils.ReverseBytes(utils.To_sha(utils.To_sha(serilisedS)))
 
 			WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
 		}
@@ -63,7 +64,7 @@ func Reader() {
 	// Concatenate and hash the bytes
 	fmt.Println("Witness root hash: ", hex.EncodeToString(SegwitMerkleRootH))
 	// fmt.Println("Segwit root: ", hex.EncodeToString(append(SegwitMerkleRootH, WitnessReserved...)))
-	hash := to_sha(to_sha(append(SegwitMerkleRootH, WitnessReserved...)))
+	hash := utils.To_sha(utils.To_sha(append(SegwitMerkleRootH, WitnessReserved...)))
 	hash = append(commitmentHeaderH, hash...)
 
 	SegwitMerkleRootS = hex.EncodeToString(hash)

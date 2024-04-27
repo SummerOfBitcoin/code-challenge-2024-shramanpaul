@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"shramanpaul/structs"
+	"shramanpaul/utils"
 	"strconv"
 )
 
@@ -32,8 +33,8 @@ func CalculateWeight(tx structs.Transaction) int {
 	totalSize += 4 + 4
 
 	// Add size for input count and output count
-	inputCountSize := len(serialise_pubkey_len(uint64(len(tx.Vin))))
-	outputCountSize := len(serialise_pubkey_len(uint64(len(tx.Vout))))
+	inputCountSize := len(utils.Serialise_pubkey_len(uint64(len(tx.Vin))))
+	outputCountSize := len(utils.Serialise_pubkey_len(uint64(len(tx.Vout))))
 	baseSize += inputCountSize + outputCountSize
 	totalSize += inputCountSize + outputCountSize
 
@@ -46,7 +47,7 @@ func CalculateWeight(tx structs.Transaction) int {
 	}
 
 	// Calculate total size
-	if IsSegWit(&tx) == 1 {
+	if utils.IsSegWit(&tx) == 1 {
 		totalSize += 2 // marker and flag
 		for _, input := range tx.Vin {
 			totalSize += len(input.TxID)/2 + 34 // TxID size + output size (scriptpubkey + value)

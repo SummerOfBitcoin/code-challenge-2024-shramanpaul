@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"math/big"
 	"shramanpaul/structs"
+	"shramanpaul/utils"
 	"time"
 )
+
 //Block Header and Mining
 //block header is made in this and then mining is also done by incrementing nonce
 
@@ -27,7 +29,7 @@ func PrintBlockHeader() {
 
 	bitsHex := "1f00ffff"										//difficulty target in compact form
 	bitsBytes, _ := hex.DecodeString(bitsHex)
-	reverseBytes(bitsBytes)
+	utils.ReverseBytes(bitsBytes)
 	bits := binary.BigEndian.Uint32(bitsBytes)
 
 	nonce := uint32(0)											//nonce
@@ -59,7 +61,7 @@ func PrintBlockHeader() {
 	blockHeaderBytes = append(blockHeaderBytes, bitsBytes...)
 	blockHeaderBytes = append(blockHeaderBytes, nonceBytes...)
 
-	hash := to_sha(to_sha(blockHeaderBytes))
+	hash := utils.To_sha(utils.To_sha(blockHeaderBytes))
 	hashInt := new(big.Int).SetBytes(hash)
 
 	// Check the block header hash against the difficulty target
@@ -73,8 +75,8 @@ func PrintBlockHeader() {
 		binary.LittleEndian.PutUint32(nonceBytes, blockHeader.Nonce)
 		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) // Update the nonce in the block header bytes
 
-		hash = to_sha(to_sha(blockHeaderBytes))
-		hash = reverseBytes(hash)
+		hash = utils.To_sha(utils.To_sha(blockHeaderBytes))
+		hash = utils.ReverseBytes(hash)
 		hashInt.SetBytes((hash))
 
 		if hashInt.Cmp(difficultyTargetInt) <= 0 {
@@ -85,7 +87,7 @@ func PrintBlockHeader() {
 	}
 	BlockHeaderHex = hex.EncodeToString(blockHeaderBytes)
 	fmt.Println("BlockHeader: ", BlockHeaderHex)
-	hash = reverseBytes(hash)
+	hash = utils.ReverseBytes(hash)
 	BlockHeaderHash = hex.EncodeToString(hash)
 
 }

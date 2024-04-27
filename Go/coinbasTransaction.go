@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"shramanpaul/structs"
+	"shramanpaul/utils"
 )
 
 
@@ -44,22 +45,22 @@ func Cointransaction() {
 		},
 	}
 
-	serilisedS, _ := serializeTransaction(&tx)
+	serilisedS, _ := utils.SerializeTransaction(&tx)
 	SerialisedCBTX = hex.EncodeToString(serilisedS)
 	fmt.Printf("Normal CBTX serialized: %x\n", serilisedS)
 
 	//segwit serialisation of the coinbase transaction
-	segwitSerialisedS, _ := SerializeSegwit(&tx)
+	segwitSerialisedS, _ := utils.SerializeSegwit(&tx)
 	SegwitSerialisedCBTX = hex.EncodeToString(segwitSerialisedS)
 	fmt.Println("Segwit CBTX serialized: ", SegwitSerialisedCBTX)
 
-	hashS := reverseBytes(to_sha(to_sha(serilisedS)))
+	hashS := utils.ReverseBytes(utils.To_sha(utils.To_sha(serilisedS)))
 	NormalSerialiseCBTX = hex.EncodeToString(hashS)
 
 	fmt.Println("NormalSerialiseCBTX: ", NormalSerialiseCBTX)
 	fmt.Println("segwitttttt:", SegwitMerkleRootS)
 
-	if IsSegWit(&tx)==1{
-		fmt.Println("Transaction is a Segwit Transaction")
-	}
+	// if utils.IsSegWit(&tx)==1{
+	// 	fmt.Println("Transaction is a Segwit Transaction")
+	// }
 }

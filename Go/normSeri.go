@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"shramanpaul/structs"
+	"shramanpaul/utils"
 )
 
 var TxIDs []string
@@ -38,8 +39,8 @@ func ReaderN() {
 		feeToWeightRatio := float64(CalculateFee(tx)) / float64(CalculateWeight(tx))
 		if feeToWeightRatio >= 3.0 && (CalculateWeight(tx) < 5304 || CalculateWeight(tx) == 12790) {
 			count++
-			serilised, _ := serializeTransaction(&tx)
-			hash := reverseBytes(to_sha(to_sha(serilised)))
+			serilised, _ := utils.SerializeTransaction(&tx)
+			hash := utils.ReverseBytes(utils.To_sha(utils.To_sha(serilised)))
 
 			TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		}

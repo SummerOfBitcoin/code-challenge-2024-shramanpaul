@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"crypto/sha256"
@@ -9,16 +9,16 @@ import (
 	"os"
 	"path/filepath"
 	"shramanpaul/structs"
+	
 )
 
-
-func to_sha(data []byte) []byte {
+func To_sha(data []byte) []byte {
 	hash := sha256.Sum256(data)
 	return hash[:]
 }
 
 // thia function will be used to derive the txids of ALL the transactions you are INCLUDING in the BLOCK --> include all these derived txids in the merkle root
-func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
+func SerializeTransaction(tx *structs.Transaction) ([]byte, error) {
 	var serialized []byte
 
 	// Serialize version
@@ -28,7 +28,7 @@ func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
 
 	// Serialize vin count
 	vinCount := uint64(len(tx.Vin))
-	serialized = append(serialized, serialise_pubkey_len(vinCount)...)
+	serialized = append(serialized, Serialise_pubkey_len(vinCount)...)
 
 	// Serialize vin
 	for _, vin := range tx.Vin {
@@ -36,7 +36,7 @@ func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		serialized = append(serialized, reverseBytes(txidBytes)...)
+		serialized = append(serialized, ReverseBytes(txidBytes)...)
 
 		voutBytes := make([]byte, 4)
 		binary.LittleEndian.PutUint32(voutBytes, vin.Vout)
@@ -47,7 +47,7 @@ func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		serialized = append(serialized, serialise_pubkey_len(uint64(len(serialized_byte)))...)
+		serialized = append(serialized, Serialise_pubkey_len(uint64(len(serialized_byte)))...)
 
 		serialized = append(serialized, serialized_byte...)
 		// Serialize sequence
@@ -58,7 +58,7 @@ func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
 
 	// Serialize vout count
 	voutCount := uint64(len(tx.Vout))
-	serialized = append(serialized, serialise_pubkey_len(voutCount)...)
+	serialized = append(serialized, Serialise_pubkey_len(voutCount)...)
 
 	// Serialize vout
 	for _, vout := range tx.Vout {
@@ -68,7 +68,7 @@ func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
 
 		// Serialize scriptPubKey length
 		scriptPubKeyLen := uint64(len(vout.Scriptpubkey) / 2) // Divide by 2 to get byte length
-		serialized = append(serialized, serialise_pubkey_len(scriptPubKeyLen)...)
+		serialized = append(serialized, Serialise_pubkey_len(scriptPubKeyLen)...)
 
 		// Serialize scriptPubKey
 		scriptPubKeyBytes, err := hex.DecodeString(vout.Scriptpubkey)
@@ -103,7 +103,7 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 
 		// Serialize vin count
 		vinCount := uint64(len(tx.Vin))
-		serialized = append(serialized, serialise_pubkey_len(vinCount)...)
+		serialized = append(serialized, Serialise_pubkey_len(vinCount)...)
 
 		// Serialize vin
 		for _, vin := range tx.Vin {
@@ -111,7 +111,7 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 			if err != nil {
 				return nil, err
 			}
-			serialized = append(serialized, reverseBytes(txidBytes)...)
+			serialized = append(serialized, ReverseBytes(txidBytes)...)
 
 			voutBytes := make([]byte, 4)
 			binary.LittleEndian.PutUint32(voutBytes, vin.Vout)
@@ -122,7 +122,7 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 			if err != nil {
 				return nil, err
 			}
-			serialized = append(serialized, serialise_pubkey_len(uint64(len(serialized_byte)))...)
+			serialized = append(serialized, Serialise_pubkey_len(uint64(len(serialized_byte)))...)
 
 			serialized = append(serialized, serialized_byte...)
 			// Serialize sequence
@@ -133,7 +133,7 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 
 		// Serialize vout count
 		voutCount := uint64(len(tx.Vout))
-		serialized = append(serialized, serialise_pubkey_len(voutCount)...)
+		serialized = append(serialized, Serialise_pubkey_len(voutCount)...)
 
 		// Serialize vout
 		for _, vout := range tx.Vout {
@@ -143,7 +143,7 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 
 			// Serialize scriptPubKey length
 			scriptPubKeyLen := uint64(len(vout.Scriptpubkey) / 2) // Divide by 2 to get byte length
-			serialized = append(serialized, serialise_pubkey_len(scriptPubKeyLen)...)
+			serialized = append(serialized, Serialise_pubkey_len(scriptPubKeyLen)...)
 
 			// Serialize scriptPubKey
 			scriptPubKeyBytes, err := hex.DecodeString(vout.Scriptpubkey)
@@ -156,13 +156,13 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 		//witness
 		for _, vin := range tx.Vin {
 			witnessCount := uint64(len(vin.Witness))
-			serialized = append(serialized, serialise_pubkey_len(witnessCount)...)
+			serialized = append(serialized, Serialise_pubkey_len(witnessCount)...)
 			for _, witness := range vin.Witness {
 				witnessBytes, err := hex.DecodeString(witness)
 				if err != nil {
 					return nil, err
 				}
-				serialized = append(serialized, serialise_pubkey_len(uint64(len(witnessBytes)))...)
+				serialized = append(serialized, Serialise_pubkey_len(uint64(len(witnessBytes)))...)
 				serialized = append(serialized, witnessBytes...)
 			}
 
@@ -172,15 +172,15 @@ func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 		binary.LittleEndian.PutUint32(locktimeBytes, tx.Locktime)
 		serialized = append(serialized, locktimeBytes...)
 		return serialized, nil
-	}else{
-		byte,err:=serializeTransaction(tx)
+	} else {
+		byte, err := SerializeTransaction(tx)
 		// fmt.Println("Transaction is not a Segwit Transaction")
-		return byte,err
+		return byte, err
 	}
 	// return nil, nil
 }
 
-func reverseBytes(data []byte) []byte {
+func ReverseBytes(data []byte) []byte {
 	length := len(data)
 	for i := 0; i < length/2; i++ {
 		data[i], data[length-i-1] = data[length-i-1], data[i]
@@ -188,7 +188,7 @@ func reverseBytes(data []byte) []byte {
 	return data
 }
 
-func serialise_pubkey_len(n uint64) []byte {
+func Serialise_pubkey_len(n uint64) []byte {
 	if n < 0xfd {
 		// If n < 0xfd, just return it as a single byte.
 		return []byte{byte(n)}
@@ -240,7 +240,7 @@ func Serialize() {
 	count1 := 0
 	for _, file := range files {
 		if filepath.Ext(file.Name()) == ".json" {
-			txData, err := jsonData("../mempool/" + file.Name())
+			txData, err := JsonData("../mempool/" + file.Name())
 			if err != nil {
 				fmt.Println("Error:", err)
 				continue
@@ -255,7 +255,7 @@ func Serialize() {
 			}
 
 			// Serialize the transaction
-			serialized, err := serializeTransaction(&tx)
+			serialized, err := SerializeTransaction(&tx)
 			if err != nil {
 				fmt.Println("Error:", err)
 				continue
@@ -263,11 +263,11 @@ func Serialize() {
 
 			// Print the serialized transaction
 			// fmt.Printf("Serialized transaction: %x\n", serialized)
-			hash := to_sha(to_sha(serialized))
-			hash = reverseBytes(hash)
+			hash := To_sha(To_sha(serialized))
+			hash = ReverseBytes(hash)
 			// fmt.Printf("Transaction ID: %x\n", hash)
 
-			file_name := to_sha(hash)
+			file_name := To_sha(hash)
 			count++
 
 			// fmt.Printf("File Name: %x File No: %d \n", file_name, count)
@@ -282,10 +282,4 @@ func Serialize() {
 	fmt.Println(count1)
 }
 
-func jsonData(filename string) (string, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
-}
+

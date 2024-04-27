@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"log"
 	"os"
+	"shramanpaul/utils"
 )
 
 func hash256(data string) string {
@@ -32,7 +33,7 @@ func generateMerkleRoot(txids []string) string {
 	level := make([]string, len(txids))
 	for idx := range txids {
 		hash, _ := hex.DecodeString(txids[idx])
-		hash = reverseBytes(hash)
+		hash = utils.ReverseBytes(hash)
 		level[idx] = hex.EncodeToString(hash)
 	}
 
