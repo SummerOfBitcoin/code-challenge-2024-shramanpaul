@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	structs "shramanpaul/Structs"
 )
 
 var TxIDs []string
@@ -27,7 +28,7 @@ func ReaderN() {
 			log.Fatal(err)
 		}
 
-		var tx Transaction
+		var tx structs.Transaction
 
 		err = json.Unmarshal(data, &tx)
 		if err != nil {

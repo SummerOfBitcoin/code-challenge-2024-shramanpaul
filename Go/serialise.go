@@ -8,36 +8,37 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	structs "shramanpaul/Structs"
 )
 
-type Input struct {
-	TxID                 string   `json:"txid";`
-	Vout                 uint32   `json:"vout";`
-	Prevout              Prevout  `json:"prevout";`
-	Scriptsig            string   `json:"scriptsig";`
-	ScriptsigAsm         string   `json:"scriptsig_asm";`
-	Witness              []string `json:"witness";`
-	IsCoinbase           bool     `json:"is_coinbase";`
-	Sequence             uint32   `json:"sequence";`
-	InnerRedeemscriptAsm string   `json:"inner_redeemscript_asm"` // Added this field to handle inner redeem script
-}
+// type Input struct {
+// 	TxID                 string   `json:"txid";`
+// 	Vout                 uint32   `json:"vout";`
+// 	Prevout              Prevout  `json:"prevout";`
+// 	Scriptsig            string   `json:"scriptsig";`
+// 	ScriptsigAsm         string   `json:"scriptsig_asm";`
+// 	Witness              []string `json:"witness";`
+// 	IsCoinbase           bool     `json:"is_coinbase";`
+// 	Sequence             uint32   `json:"sequence";`
+// 	InnerRedeemscriptAsm string   `json:"inner_redeemscript_asm"` // Added this field to handle inner redeem script
+// }
 
-type Prevout struct {
-	Scriptpubkey        string `json:"scriptpubkey";`
-	ScriptpubkeyAsm     string `json:"scriptpubkey_asm";`
-	ScriptpubkeyType    string `json:"scriptpubkey_type";`
-	ScriptpubkeyAddress string `json:"scriptpubkey_address";`
-	Value               uint64 `json:"value";`
-}
+// type Prevout struct {
+// 	Scriptpubkey        string `json:"scriptpubkey";`
+// 	ScriptpubkeyAsm     string `json:"scriptpubkey_asm";`
+// 	ScriptpubkeyType    string `json:"scriptpubkey_type";`
+// 	ScriptpubkeyAddress string `json:"scriptpubkey_address";`
+// 	Value               uint64 `json:"value";`
+// }
 
-type Transaction struct {
-	Version       uint32    `json:"version";`
-	Locktime      uint32    `json:"locktime";`
-	Vin           []Input   `json:"vin";`
-	Vout          []Prevout `json:"vout";`
-	Scriptsig_asm string    `json:"scriptsig_asm";`
-	Witness       []string  `json:"witness";`
-}
+// type Transaction struct {
+// 	Version       uint32    `json:"version";`
+// 	Locktime      uint32    `json:"locktime";`
+// 	Vin           []Input   `json:"vin";`
+// 	Vout          []Prevout `json:"vout";`
+// 	Scriptsig_asm string    `json:"scriptsig_asm";`
+// 	Witness       []string  `json:"witness";`
+// }
 
 func to_sha(data []byte) []byte {
 	hash := sha256.Sum256(data)
@@ -45,7 +46,7 @@ func to_sha(data []byte) []byte {
 }
 
 // thia function will be used to derive the txids of ALL the transactions you are INCLUDING in the BLOCK --> include all these derived txids in the merkle root
-func serializeTransaction(tx *Transaction) ([]byte, error) {
+func serializeTransaction(tx *structs.Transaction) ([]byte, error) {
 	var serialized []byte
 
 	// Serialize version
@@ -113,7 +114,7 @@ func serializeTransaction(tx *Transaction) ([]byte, error) {
 
 //thia function will be used to derive the wtxids of ALL the transactions you are INCLUDING in the BLOCK --> wtxids of legacy == txids of legacy --> include all these wtxids in the witness merkle.
 
-func SerializeSegwit(tx *Transaction) ([]byte, error) {
+func SerializeSegwit(tx *structs.Transaction) ([]byte, error) {
 	if IsSegWit(tx) == 1 {
 		var serialized []byte
 
@@ -274,7 +275,7 @@ func Serialize() {
 			}
 
 			// Unmarshal the transaction data
-			var tx Transaction
+			var tx structs.Transaction
 			err = json.Unmarshal([]byte(txData), &tx)
 			if err != nil {
 				panic(fmt.Sprintf("Error: %v", err))

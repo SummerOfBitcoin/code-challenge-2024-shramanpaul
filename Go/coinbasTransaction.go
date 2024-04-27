@@ -3,44 +3,9 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	// "strconv"
+	structs "shramanpaul/Structs"
 )
 
-// type Input2 struct {
-// 	Txid          string
-// 	Vout          string
-// 	Scriptsigsize string
-// 	Scriptsig     string
-// 	Sequence      string
-// 	Witness       []string
-// }
-
-// type Output2 struct {
-// 	Amount           string
-// 	ScriptPubKeySize string
-// 	ScriptPubKey     string
-// }
-// type WitnessItem struct {
-// 	Size string
-// 	Item string
-// }
-
-// type Witness struct {
-// 	StackItems string
-// 	Items      map[string]WitnessItem
-// }
-
-// type Transaction2 struct {
-// 	Version string //
-// 	// Marker      string
-// 	// Flag        string
-// 	Inputcount  string
-// 	Inputs      []Input2
-// 	Outputcount string
-// 	Outputs     []Output2
-// 	Witness     []Witness
-// 	Locktime    string //
-// }
 
 var NormalSerialiseCBTX string
 var SerialisedCBTX string
@@ -48,7 +13,7 @@ var SegwitSerialisedCBTX string
 
 func Cointransaction() {
 
-	var tx Transaction
+	var tx structs.Transaction
 
 	amount := Amount()
 	// amountStr := strconv.Itoa(amount)
@@ -58,7 +23,7 @@ func Cointransaction() {
 	// tx.Marker = "00"
 	// tx.Flag = "01"
 	tx.Locktime = 0
-	tx.Vin = []Input{
+	tx.Vin = []structs.Input{
 		{
 			TxID:      "0000000000000000000000000000000000000000000000000000000000000000",
 			Vout:      1,
@@ -67,7 +32,7 @@ func Cointransaction() {
 			Sequence:  0xffffffff,
 		},
 	}
-	tx.Vout = []Prevout{
+	tx.Vout = []structs.Prevout{
 		{
 			Value:        uint64(amount),
 			Scriptpubkey: "76a914edf10a7fac6b32e24daa5305c723f3de58db1bc888ac",
@@ -79,13 +44,10 @@ func Cointransaction() {
 		},
 	}
 
-	// Now you can use the tx variable
-	// fmt.Println(tx)
-
-	// serilisedS, _ := SerializeSegwit(&tx)
 	serilisedS, _ := serializeTransaction(&tx)
 	SerialisedCBTX = hex.EncodeToString(serilisedS)
 	fmt.Printf("Normal CBTX serialized: %x\n", serilisedS)
+
 	//segwit serialisation of the coinbase transaction
 	segwitSerialisedS, _ := SerializeSegwit(&tx)
 	SegwitSerialisedCBTX = hex.EncodeToString(segwitSerialisedS)

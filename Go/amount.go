@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	structs "shramanpaul/Structs"
 )
 
 func Amount() int {
@@ -22,7 +23,7 @@ func Amount() int {
 			log.Fatal(err)
 		}
 
-		var tx Transaction
+		var tx structs.Transaction
 
 		err = json.Unmarshal(data, &tx)
 		if err != nil {

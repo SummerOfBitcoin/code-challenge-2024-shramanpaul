@@ -9,39 +9,32 @@ type BlockHeader struct {
 	Nonce         uint32
 }
 
-type Input2 struct {
-	Txid          string
-	Vout          string
-	Scriptsigsize string
-	Scriptsig     string
-	Sequence      string
-	Witness       []string
+type Input struct {
+	TxID                 string   `json:"txid";`
+	Vout                 uint32   `json:"vout";`
+	Prevout              Prevout  `json:"prevout";`
+	Scriptsig            string   `json:"scriptsig";`
+	ScriptsigAsm         string   `json:"scriptsig_asm";`
+	Witness              []string `json:"witness";`
+	IsCoinbase           bool     `json:"is_coinbase";`
+	Sequence             uint32   `json:"sequence";`
+	InnerRedeemscriptAsm string   `json:"inner_redeemscript_asm"` // Added this field to handle inner redeem script
 }
 
-type Output2 struct {
-	Amount           string
-	ScriptPubKeySize string
-	ScriptPubKey     string
-}
-type WitnessItem struct {
-	Size string
-	Item string
+type Prevout struct {
+	Scriptpubkey        string `json:"scriptpubkey";`
+	ScriptpubkeyAsm     string `json:"scriptpubkey_asm";`
+	ScriptpubkeyType    string `json:"scriptpubkey_type";`
+	ScriptpubkeyAddress string `json:"scriptpubkey_address";`
+	Value               uint64 `json:"value";`
 }
 
-type Witness struct {
-	StackItems string
-	Items      map[string]WitnessItem
-}
-
-type Transaction2 struct {
-	Version string //
-	// Marker      string
-	// Flag        string
-	Inputcount  string
-	Inputs      []Input2
-	Outputcount string
-	Outputs     []Output2
-	Witness     []Witness
-	Locktime    string //
+type Transaction struct {
+	Version       uint32    `json:"version";`
+	Locktime      uint32    `json:"locktime";`
+	Vin           []Input   `json:"vin";`
+	Vout          []Prevout `json:"vout";`
+	Scriptsig_asm string    `json:"scriptsig_asm";`
+	Witness       []string  `json:"witness";`
 }
 

@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	structs "shramanpaul/Structs"
 	"strconv"
 )
 
-func CalculateFee(tx Transaction) int {
+func CalculateFee(tx structs.Transaction) int {
 	totalInput := 0
 	totalOutput := 0
 
@@ -22,7 +23,7 @@ func CalculateFee(tx Transaction) int {
 	return totalInput - totalOutput
 }
 
-func CalculateWeight(tx Transaction) int {
+func CalculateWeight(tx structs.Transaction) int {
 	baseSize := 0
 	totalSize := 0
 
@@ -84,7 +85,7 @@ func Priority() {
 			log.Fatal(err)
 		}
 
-		var tx Transaction
+		var tx structs.Transaction
 
 		err = json.Unmarshal(data, &tx)
 		if err != nil {
