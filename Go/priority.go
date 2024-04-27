@@ -115,7 +115,7 @@ func Priority() {
 	totalWeight := 0
 	for _, txWithRatio := range txWithRatios {
 		txWeight := CalculateWeight(txWithRatio.Tx)
-		if totalWeight+txWeight <= 4000000 { // Assuming 4000000 is the maximum block weight
+		if totalWeight+txWeight <= 400000 { // Assuming 4000000 is the maximum block weight
 			totalWeight += txWeight
 			count++
 			ratio = append(ratio, txWithRatio.Ratio)
