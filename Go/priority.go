@@ -107,7 +107,6 @@ func Priority() {
 		weightStrings[i] = strconv.FormatFloat(w, 'f', -1, 64)
 	}
 
-	writeToFile(weightStrings)
 	fmt.Println("count: ", count)
 	// fmt.Println("count fees: ", count2)
 }
