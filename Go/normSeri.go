@@ -14,7 +14,6 @@ var TxIDs []string
 var NormalMerkleRoot string
 
 func ReaderN() {
-	// TxIDs = append(TxIDs, NormalSerialiseCBTX) //done
 	TxIDs = nil
 	files, err := os.ReadDir("../mempool")
 	if err != nil {
@@ -45,10 +44,8 @@ func ReaderN() {
 			TxIDs = append(TxIDs, hex.EncodeToString(hash))
 		}
 	}
-	// fmt.Println("count: ",count)
+
 	TxIDs = append([]string{NormalSerialiseCBTX}, TxIDs...)
 	NormalMerkleRoot = generateMerkleRoot(TxIDs)
-	// fmt.Println("OK: ", len(TxIDs))
-	// fmt.Println("Computed Merkle Root Normal:", NormalMerkleRoot)
-	// writeToFile(TxIDs)
+
 }

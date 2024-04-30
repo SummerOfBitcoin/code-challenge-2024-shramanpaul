@@ -40,8 +40,7 @@ func Reader() {
 		if feeToWeightRatio >= 3.0 && (CalculateWeight(tx) < 5304 || CalculateWeight(tx) == 12790) {
 			count++
 			serilisedS, _ := utils.SerializeSegwit(&tx)
-			// fmt.Println("Segwit serilisedS: ",hex.EncodeToString(serilisedS))
-			// fmt.Println("count of tx:",count)
+	
 			hashS := utils.ReverseBytes(utils.To_sha(utils.To_sha(serilisedS)))
 
 			WtxIDs = append(WtxIDs, hex.EncodeToString(hashS))
@@ -51,25 +50,23 @@ func Reader() {
 	commitmentHeader := "6a24aa21a9ed"
 	WtxIDs = append([]string{"0000000000000000000000000000000000000000000000000000000000000000"}, WtxIDs...)
 	SegwitMerkleRootS = generateMerkleRoot(WtxIDs)
-	// fmt.Println("OK segwit: ",len(WtxIDs))
-	// fmt.Println("SegwitMerkleRoot: ",SegwitMerkleRootS)
+
 
 	WitnessReservedValue := "0000000000000000000000000000000000000000000000000000000000000000"
 
-	// Decode the hexadecimal strings to bytes
 	commitmentHeaderH, _ := hex.DecodeString(commitmentHeader)
 	SegwitMerkleRootH, _ := hex.DecodeString(SegwitMerkleRootS)
 	WitnessReserved, _ := hex.DecodeString(WitnessReservedValue)
 
-	// Concatenate and hash the bytes
+
 	fmt.Println("Witness root hash: ", hex.EncodeToString(SegwitMerkleRootH))
-	// fmt.Println("Segwit root: ", hex.EncodeToString(append(SegwitMerkleRootH, WitnessReserved...)))
+	
 	hash := utils.To_sha(utils.To_sha(append(SegwitMerkleRootH, WitnessReserved...)))
 	hash = append(commitmentHeaderH, hash...)
 
 	SegwitMerkleRootS = hex.EncodeToString(hash)
 	fmt.Println("Computed Merkle Root Segwit: ", SegwitMerkleRootS)
 
-	// writeToFile(WtxIDs)
+	
 
 }

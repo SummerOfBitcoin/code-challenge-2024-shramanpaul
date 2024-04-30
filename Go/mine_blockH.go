@@ -64,7 +64,7 @@ func PrintBlockHeader() {
 	hash := utils.To_sha(utils.To_sha(blockHeaderBytes))
 	hashInt := new(big.Int).SetBytes(hash)
 
-	// Check the block header hash against the difficulty target
+	
 	difficultyTarget := "0000ffff00000000000000000000000000000000000000000000000000000000"
 	difficultyTargetBytes, _ := hex.DecodeString(difficultyTarget)
 	difficultyTargetInt := new(big.Int).SetBytes((difficultyTargetBytes))
@@ -73,7 +73,7 @@ func PrintBlockHeader() {
 	for {
 		nonceBytes := make([]byte, 4)
 		binary.LittleEndian.PutUint32(nonceBytes, blockHeader.Nonce)
-		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) // Update the nonce in the block header bytes
+		blockHeaderBytes = append(blockHeaderBytes[:76], nonceBytes...) 
 
 		hash = utils.To_sha(utils.To_sha(blockHeaderBytes))
 		hash = utils.ReverseBytes(hash)

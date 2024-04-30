@@ -43,17 +43,15 @@ func Cointransaction() {
 
 	serilisedS, _ := utils.SerializeTransaction(&tx)
 	SerialisedCBTX = hex.EncodeToString(serilisedS)
-	fmt.Printf("Normal CBTX serialized: %x\n", serilisedS)
-
-	//segwit serialisation of the coinbase transaction
+	
 	segwitSerialisedS, _ := utils.SerializeSegwit(&tx)
 	SegwitSerialisedCBTX = hex.EncodeToString(segwitSerialisedS)
-	fmt.Println("Segwit CBTX serialized: ", SegwitSerialisedCBTX)
+	
 
 	hashS := utils.ReverseBytes(utils.To_sha(utils.To_sha(serilisedS)))
 	NormalSerialiseCBTX = hex.EncodeToString(hashS)
 
 	fmt.Println("NormalSerialiseCBTX: ", NormalSerialiseCBTX)
-	fmt.Println("segwitttttt:", SegwitMerkleRootS)
+	
 
 }
